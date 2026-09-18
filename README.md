@@ -36,6 +36,31 @@ Keeping the two in step matters: anyone subscribed to the calendar gets
 changes, replace it (180x180, no alpha, flat background) and run
 `python3 tools/make-images.py` to rebuild the manifest icons and the share card.
 
+## Subscribing, per platform
+
+There is no single link that subscribes everywhere, so the page picks a route
+from the user agent and offers the rest as alternatives.
+
+| Platform | Main button | Also offered |
+| --- | --- | --- |
+| iOS, iPadOS, macOS | Apple Calendar, `webcal://` | Google Calendar, Outlook, Copy link |
+| Android | Google Calendar | Outlook, Copy link |
+| Windows, Linux | Google Calendar | Outlook, Apple Calendar, Copy link |
+
+Two things drive that table:
+
+- **`webcal://` has no registered handler on Android.** A `webcal://` link there
+  opens nothing at all, in Chrome, Samsung Internet and Firefox alike, so Android
+  is never offered one. It stays on Apple and desktop, where a local calendar
+  client picks it up.
+- **Google Calendar cannot add a subscription from a phone.** Neither its Android
+  nor its iOS app has an add-by-URL screen, and the mobile web redirects away from
+  the one that exists. The link works on a computer, and the subscription then
+  syncs down to the phone, so Android users get a line saying exactly that rather
+  than a button that looks broken.
+
+Copy link is the universal fallback and is always present.
+
 ## Link previews and the home screen
 
 Absolute URLs in the `og:` tags point at `https://ryan-withers.github.io/warriors/`.
