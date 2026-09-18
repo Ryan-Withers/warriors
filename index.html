@@ -109,8 +109,6 @@
   .cal p { max-width: 34rem; }
   .hint { margin-top: .875rem; font-size: .9375rem; color: var(--chalk-soft); }
   .hint[hidden] { display: none; }
-  .or { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
-  .or[hidden] { display: none; }
   .feed-status:empty { display: none; }
   .feed-status { margin-top: .875rem; font-size: .9375rem; color: var(--chalk-soft); }
 
@@ -231,15 +229,6 @@
     </p>
     <p class="hint" id="alert-hint" hidden>Want the reminders too? Switch off Remove Alerts when you subscribe.</p>
     <div class="feed-status" id="feed-status" role="status"></div>
-    <div class="or">
-      <p>Rather add games one-off? That works, but one-off events can't update themselves, so this page flags any game that changes after you add it.</p>
-      <div class="actions">
-        <button type="button" class="btn" id="add-all">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-          <span id="add-all-label">Add all games once</span>
-        </button>
-      </div>
-    </div>
   </section>
 
   <section class="draw" aria-labelledby="draw-h">
@@ -711,16 +700,9 @@
       (data.reminderMinutesBeforeArrival > 0 ? ', with a reminder ' + duration(data.reminderMinutesBeforeArrival) + ' before you need to arrive' : '') + '.</p>';
   }
 
-  function remaining() {
-    return games.filter(function (g) { return g.inCalendar && !g.cancelled && until(g) >= 0; });
-  }
-
   function render() {
     renderNext();
     $('#rounds').innerHTML = games.map(roundHtml).join('');
-    var anyPast = games.some(function (g) { return g.inCalendar && until(g) < 0; });
-    $('#add-all-label').textContent = anyPast ? 'Add the remaining games once' : 'Add all games once';
-    $('.or').hidden = remaining().length === 0;
   }
 
   var toastTimer;
@@ -776,15 +758,6 @@
       render();
       var again = document.querySelector(region + ' [data-add="' + id + '"]');
       if (again) again.focus();
-      return;
-    }
-    if (t.closest('#add-all')) {
-      var list = remaining();
-      if (!list.length) { toast('No games left to add.'); return; }
-      deliver(C.calendar(data, list), data.team.toLowerCase() + '-games.ics');
-      list.forEach(function (x) { added[x.uid] = C.fingerprint(x); });
-      save();
-      render();
       return;
     }
     if (t.closest('[data-feed-download]')) {
