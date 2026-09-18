@@ -1,0 +1,253 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//warriors-draw//afv2026-mens//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Warriors 2026
+X-WR-CALDESC:AFV 2026 Men's draw for the Warriors. Events start at arrival 
+ time\, 90 minutes before kickoff.
+X-WR-TIMEZONE:Australia/Melbourne
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+X-PUBLISHED-TTL:PT1H
+BEGIN:VTIMEZONE
+TZID:Australia/Melbourne
+BEGIN:STANDARD
+DTSTART:19700405T030000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+TZOFFSETFROM:+1100
+TZOFFSETTO:+1000
+TZNAME:AEST
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19701004T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=1SU
+TZOFFSETFROM:+1000
+TZOFFSETTO:+1100
+TZNAME:AEDT
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:afv2026-mens-r1@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20260919T093000
+DTEND;TZID=Australia/Melbourne:20260919T133000
+SUMMARY:🏈 Warriors v Buccaneers (KO 11:00am)
+LOCATION:Epsom Huntly Recreation Reserve\, 353 Midland Highway\, Epsom VIC 
+ 3551
+DESCRIPTION:Round 1\, AFV 2026 Men's\nArrive 9:30am\, kickoff 11:00am\nEpso
+ m Huntly Recreation Reserve\, Bendigo (Field 1)\nWarriors are the duty tea
+ m\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Buccaneers: be at Epsom Huntly Recreation Reserve by 9:30am
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r2@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20260925T123000
+DTEND;TZID=Australia/Melbourne:20260925T163000
+SUMMARY:🏈 Predators v Warriors (KO 2:00pm)
+LOCATION:MacPherson Park\, 783 Coburns Road\, Harkness VIC 3337
+DESCRIPTION:Round 2\, AFV 2026 Men's\nArrive 12:30pm\, kickoff 2:00pm\nMacP
+ herson Park\, Melton (Field 2)\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Predators: be at MacPherson Park by 12:30pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r3@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261004T123000
+DTEND;TZID=Australia/Melbourne:20261004T163000
+SUMMARY:🏈 Warriors v Crusaders (KO 2:00pm)
+LOCATION:Henry Turner Memorial Reserve South\, Farnsworth Avenue\, Footscra
+ y VIC 3011
+DESCRIPTION:Round 3\, AFV 2026 Men's\nArrive 12:30pm\, kickoff 2:00pm\nHenr
+ y Turner Memorial Reserve South\, Footscray\nWarriors are the duty team\nD
+ aylight saving starts at 2am that morning. Clocks go forward an hour.\nAFV
+  fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Crusaders: be at Henry Turner Memorial Reserve South by 12:30
+ pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r5@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261018T123000
+DTEND;TZID=Australia/Melbourne:20261018T163000
+SUMMARY:🏈 Rangers v Warriors (KO 2:00pm)
+LOCATION:Ranger Field\, 2 Springfield Avenue\, Croydon VIC 3136
+DESCRIPTION:Round 5\, AFV 2026 Men's\nArrive 12:30pm\, kickoff 2:00pm\nRang
+ er Field\, Croydon\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Rangers: be at Ranger Field by 12:30pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r6@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261024T120000
+DTEND;TZID=Australia/Melbourne:20261024T160000
+SUMMARY:🏈 Predators v Warriors (KO 1:30pm)
+LOCATION:MacPherson Park\, 783 Coburns Road\, Harkness VIC 3337
+DESCRIPTION:Round 6\, AFV 2026 Men's\nArrive 12:00pm\, kickoff 1:30pm\nMacP
+ herson Park\, Melton (Field 2)\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Predators: be at MacPherson Park by 12:00pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r7@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261101T130000
+DTEND;TZID=Australia/Melbourne:20261101T170000
+SUMMARY:🏈 Chargers v Warriors (KO 2:30pm)
+LOCATION:MacPherson Park\, 783 Coburns Road\, Harkness VIC 3337
+DESCRIPTION:Round 7\, AFV 2026 Men's\nArrive 1:00pm\, kickoff 2:30pm\nMacPh
+ erson Park\, Melton (Field 1)\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Chargers: be at MacPherson Park by 1:00pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r8@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261108T130000
+DTEND;TZID=Australia/Melbourne:20261108T170000
+SUMMARY:🏈 Warriors v Wolves (KO 2:30pm)
+LOCATION:Hendy Street Reserve\, 93 Hendy Street\, Corio VIC 3214
+DESCRIPTION:Round 8\, AFV 2026 Men's\nArrive 1:00pm\, kickoff 2:30pm\nHendy
+  Street Reserve\, Geelong (Field 2)\nWarriors are the duty team\nAFV fixtu
+ re Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Wolves: be at Hendy Street Reserve by 1:00pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r9@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261114T103000
+DTEND;TZID=Australia/Melbourne:20261114T143000
+SUMMARY:🏈 Warriors v Buccaneers (KO 12:00pm)
+LOCATION:MacPherson Park\, 783 Coburns Road\, Harkness VIC 3337
+DESCRIPTION:Round 9\, AFV 2026 Men's\nArrive 10:30am\, kickoff 12:00pm\nMac
+ Pherson Park\, Melton (Field 2)\nWarriors are the duty team\nAFV fixture V
+ ersion 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Buccaneers: be at MacPherson Park by 10:30am
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r10@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261122T133000
+DTEND;TZID=Australia/Melbourne:20261122T173000
+SUMMARY:🏈 Warriors v Crusaders (KO 3:00pm)
+LOCATION:Hendy Street Reserve\, 93 Hendy Street\, Corio VIC 3214
+DESCRIPTION:Round 10\, AFV 2026 Men's\nArrive 1:30pm\, kickoff 3:00pm\nHend
+ y Street Reserve\, Geelong (Field 1)\nWarriors are the duty team\nAFV fixt
+ ure Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Crusaders: be at Hendy Street Reserve by 1:30pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-r11@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;TZID=Australia/Melbourne:20261128T123000
+DTEND;TZID=Australia/Melbourne:20261128T163000
+SUMMARY:🏈 Rangers v Warriors (KO 2:00pm)
+LOCATION:Ranger Field\, 2 Springfield Avenue\, Croydon VIC 3136
+DESCRIPTION:Round 11\, AFV 2026 Men's\nArrive 12:30pm\, kickoff 2:00pm\nRan
+ ger Field\, Croydon\nAFV fixture Version 1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT120M
+DESCRIPTION:v Rangers: be at Ranger Field by 12:30pm
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-sf@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;VALUE=DATE:20261205
+DTEND;VALUE=DATE:20261206
+SUMMARY:🏈 Warriors Semi Final (TBA)
+DESCRIPTION:Semi Final\, AFV 2026 Men's\nTime TBA\nGround TBA\nIf we finish
+  top 4 in Division 1 (1st v 4th\, 2nd v 3rd).\nAFV fixture Version 1
+STATUS:TENTATIVE
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:afv2026-mens-vb@warriors-draw
+DTSTAMP:20260820T000000Z
+LAST-MODIFIED:20260820T000000Z
+SEQUENCE:0
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+SUMMARY:🏈 Warriors VicBowl (TBA)
+DESCRIPTION:VicBowl\, AFV 2026 Men's\nTime TBA\nGround TBA\nIf we win our s
+ emi final.\nAFV fixture Version 1
+STATUS:TENTATIVE
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
