@@ -130,7 +130,6 @@
   .alt { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1rem; font-weight: 700; }
   .alt[hidden] { display: none; }
   .alt a { text-underline-offset: 3px; }
-  .added { font-size: .9375rem; font-weight: 700; color: var(--chalk-soft); }
 
   /* The draw: one yard line per round */
   .draw { padding: 1.75rem 0 .5rem; }
@@ -474,18 +473,8 @@
     return L.map(fold).join('\r\n') + '\r\n';
   }
 
-  // What matters for turning up: time, ground, field, opponent, cancelled. Used to spot stale one-off adds.
-  function fingerprint(g) {
-    var v = g.venueInfo || {};
-    var s = [g.hasTime ? icsLocal(g.arriveAt) + '/' + icsLocal(g.endAt) : g.date,
-      v.ground, v.address, g.field, g.opponent, g.cancelled ? 'x' : ''].join('|');
-    var h = 2166136261;
-    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-    return h.toString(36);
-  }
-
   root.DrawCore = {
-    TZID: TZID, prepare: prepare, calendar: calendar, fingerprint: fingerprint,
+    TZID: TZID, prepare: prepare, calendar: calendar,
     clock: clock, dayLabel: dayLabel, weekday: weekday
   };
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -519,7 +508,6 @@
   var framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
   var ICON = {
-    cal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
     pin: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21.5s7-6.1 7-11.8a7 7 0 1 0-14 0c0 5.7 7 11.8 7 11.8z"/><circle cx="12" cy="9.7" r="2.4"/></svg>',
     nav: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8z"/></svg>'
   };
@@ -540,26 +528,15 @@
   function until(g) { return dayNo(g.date) - dayNo(today); }
   var next = games.filter(function (g) { return !g.bye && !g.cancelled && until(g) >= 0; })[0] || null;
 
-  // One-off adds are remembered on this device so a later change can be flagged
-  var KEY = 'draw:' + data.season + ':' + data.team + ':added';
-  var added = (function () { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(added)); } catch (e) {} }
-  function addState(g) {
-    if (!Object.prototype.hasOwnProperty.call(added, g.uid)) return 'none';
-    return added[g.uid] === C.fingerprint(g) ? 'current' : 'stale';
-  }
-
   function query(v) { return encodeURIComponent(v.ground + ', ' + v.address); }
+  // Universal link: hands off to the Waze app when it is installed and falls back
+  // to waze.com when it is not. navigate=yes starts the route rather than just
+  // dropping a pin, so it is one tap from here to driving.
+  function wazeUrl(v) { return 'https://waze.com/ul?q=' + query(v) + '&navigate=yes'; }
   function placeUrl(v, provider) {
-    provider = provider || (isApple ? 'apple' : 'google');
     return provider === 'apple'
       ? 'https://maps.apple.com/?q=' + query(v)
       : 'https://www.google.com/maps/search/?api=1&query=' + query(v);
-  }
-  function directionsUrl(v) {
-    return isApple
-      ? 'https://maps.apple.com/?daddr=' + query(v)
-      : 'https://www.google.com/maps/dir/?api=1&destination=' + query(v);
   }
 
   function relLabel(g) {
@@ -579,7 +556,7 @@
   function placeHtml(g, withField) {
     var v = g.venueInfo;
     if (!v) return '';
-    return '<a class="place" href="' + placeUrl(v) + '" target="_blank" rel="noopener">' + ICON.pin +
+    return '<a class="place" href="' + wazeUrl(v) + '" target="_blank" rel="noopener">' + ICON.pin +
       '<span class="ground">' + esc(v.ground) + (withField && g.field ? ', ' + esc(g.field).replace(/ /g, '&nbsp;') : '') + '</span>' +
       '<span class="addr">' + esc(v.address) + '</span></a>';
   }
@@ -590,22 +567,7 @@
       out.push('<p class="notice"><strong>Changed ' + esc(C.dayLabel(c.on)) + ':</strong> ' + esc(c.note) + '</p>');
     });
     if (g.dst && !g.cancelled) out.push('<p class="notice">' + esc(g.dst) + '</p>');
-    var state = addState(g);
-    if (state === 'stale' && g.cancelled) {
-      out.push('<p class="notice">Cancelled after you added it. Delete it from your calendar.</p>');
-    } else if (state === 'stale') {
-      out.push('<div class="notice">This game changed after you added it to your calendar.<br>' +
-        '<button type="button" class="btn" data-add="' + esc(g.id) + '">' + ICON.cal + 'Add the new version</button>' +
-        '<br>If the old event is still there afterwards, delete it.</div>');
-    }
     return out.join('');
-  }
-
-  function addButton(g, primary) {
-    if (g.cancelled || addState(g) === 'stale') return '';
-    return '<button type="button" class="btn' + (primary ? ' primary' : '') + '" data-add="' + esc(g.id) + '">' + ICON.cal +
-      (g.hasTime ? 'Add to calendar' : 'Hold the date') + '</button>' +
-      (addState(g) === 'current' ? '<span class="added">Added</span>' : '');
   }
 
   function roundHtml(g) {
@@ -629,12 +591,11 @@
     if (g.isFinal && g.opponent) chips.push(esc(g.label));
     if (g.cancelled) chips.push('Cancelled');
     if (g.isDuty) chips.push('Duty team');
-    var actions = addButton(g, false);
     return '<li class="' + cls + '" id="' + esc(g.id) + '">' + mark + '<div class="body">' + when +
       '<h3 class="vs">' + heading + '</h3>' +
       (g.note ? '<p class="note">' + esc(g.note) + '</p>' : '') + times + placeHtml(g, true) +
       (chips.length ? '<p class="chips">' + chips.map(function (c) { return '<span class="chip">' + c + '</span>'; }).join('') + '</p>' : '') +
-      noticesHtml(g) + (actions ? '<div class="actions">' + actions + '</div>' : '') +
+      noticesHtml(g) +
       '</div></li>';
   }
 
@@ -659,9 +620,8 @@
       placeHtml(g) +
       (g.isDuty ? '<p class="chips"><span class="chip">Duty team</span></p>' : '') +
       noticesHtml(g) +
-      '<div class="actions">' + addButton(g, true) +
-      (v ? '<a class="btn" href="' + directionsUrl(v) + '" target="_blank" rel="noopener">' + ICON.nav + 'Directions</a>' : '') +
-      '</div>';
+      (v ? '<div class="actions"><a class="btn primary" href="' + wazeUrl(v) + '" target="_blank" rel="noopener">' +
+        ICON.nav + 'Go with Waze</a></div>' : '');
   }
 
   function renderHeader() {
@@ -688,7 +648,8 @@
         (others.length ? (nums.length ? ', ' : '') + others.join(', ') : '');
       return '<li><h3>' + esc(v.ground) + '</h3><p class="addr">' + esc(v.address) + '</p>' +
         '<p class="used">' + esc(v.town) + ': ' + esc(used) + '</p>' +
-        '<p class="maplinks"><a href="' + placeUrl(v, 'apple') + '" target="_blank" rel="noopener">Apple Maps</a>' +
+        '<p class="maplinks"><a href="' + wazeUrl(v) + '" target="_blank" rel="noopener">Waze</a>' +
+        '<a href="' + placeUrl(v, 'apple') + '" target="_blank" rel="noopener">Apple Maps</a>' +
         '<a href="' + placeUrl(v, 'google') + '" target="_blank" rel="noopener">Google Maps</a></p></li>';
     }).join('');
   }
@@ -746,20 +707,6 @@
 
   document.addEventListener('click', function (e) {
     var t = e.target;
-    var add = t.closest('[data-add]');
-    if (add) {
-      var id = add.getAttribute('data-add');
-      var region = add.closest('#next') ? '#next' : '#rounds';
-      var g = games.filter(function (x) { return x.id === id; })[0];
-      if (!g) return;
-      deliver(C.calendar(data, [g]), data.team.toLowerCase() + '-' + g.id + '.ics');
-      added[g.uid] = C.fingerprint(g);
-      save();
-      render();
-      var again = document.querySelector(region + ' [data-add="' + id + '"]');
-      if (again) again.focus();
-      return;
-    }
     if (t.closest('[data-feed-download]')) {
       deliver(C.calendar(data, games, { feed: true }), data.feedFile, true,
         'Saved ' + data.feedFile + '. Upload it next to index.html.');
