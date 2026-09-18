@@ -217,15 +217,13 @@
     <p>Subscribe once and your calendar follows the draw. If a game moves, the event moves with it.</p>
     <p class="notice" id="inapp-note" hidden>Built-in browser blocks calendars, open in Safari for best results.</p>
     <div class="actions">
-      <a class="btn primary" id="sub-apple" aria-disabled="true">
+      <a class="btn primary" id="sub-primary" aria-disabled="true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-        <span id="sub-label">Subscribe in Apple Calendar</span>
+        <span id="sub-label">Subscribe to the calendar</span>
       </a>
     </div>
-    <p class="alt" id="sub-alt" hidden>
-      <a id="sub-google" target="_blank" rel="noopener">Google Calendar</a>
-      <button type="button" class="linkish" id="sub-copy">Copy feed link</button>
-    </p>
+    <p class="alt" id="sub-alt" hidden></p>
+    <p class="hint" id="sub-hint" hidden></p>
     <p class="hint" id="alert-hint" hidden>Want the reminders too? Switch off Remove Alerts when you subscribe.</p>
     <div class="feed-status" id="feed-status" role="status"></div>
   </section>
@@ -502,8 +500,12 @@
   // "Safari" in the user agent, but WebKit blocks top-level data: navigation and
   // blob downloads inside them. navigator.standalone exists only in real Safari,
   // so on iOS its absence is the reliable tell.
+  var isAndroid = /Android/.test(ua);
   var inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|WhatsApp|Snapchat|LinkedInApp/i.test(ua)
-    || (isIOS && !otherIosBrowser && typeof navigator.standalone !== 'boolean');
+    || (isIOS && !otherIosBrowser && typeof navigator.standalone !== 'boolean')
+    // Android in-app browsers are WebViews, which the platform marks with "wv"
+    // in the user agent. A real Chrome or Samsung Internet never carries it.
+    || (isAndroid && /;\s*wv[;)]/.test(ua));
   var iosSafari = isIOS && !inApp && /Safari\//.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
   var framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
@@ -716,10 +718,29 @@
     if (cp && cp.getAttribute('data-url')) copy(cp.getAttribute('data-url'));
   });
 
+  // Every platform has one subscribe route that actually works, and the rest are
+  // there for whoever keeps their calendar somewhere else.
+  //   Apple    webcal:// hands straight to Calendar on iOS and macOS.
+  //   Google   needs its own add-by-URL page; it is the only realistic route on Android.
+  //   Outlook  addfromweb takes the https feed directly.
+  // webcal:// has no registered handler on Android, so it is left out there
+  // entirely rather than offered as a link that does nothing.
+  function subscribeRoutes(https, webcal) {
+    var apple = { key: 'apple', label: 'Apple Calendar', href: webcal, external: false };
+    var google = { key: 'google', label: 'Google Calendar', external: true,
+      href: 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(webcal) };
+    var outlook = { key: 'outlook', label: 'Outlook', external: true,
+      href: 'https://outlook.live.com/calendar/0/addfromweb?url=' + encodeURIComponent(https) +
+        '&name=' + encodeURIComponent(data.calendarName) };
+    if (isApple) return [apple, google, outlook];
+    if (isAndroid) return [google, outlook];
+    return [google, outlook, apple];
+  }
+
   // The subscription feed is a static file next to this page. Check it exists and matches the draw above.
   function normalise(s) { return s.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').trim(); }
   function checkFeed() {
-    var status = $('#feed-status'), sub = $('#sub-apple');
+    var status = $('#feed-status'), sub = $('#sub-primary');
     var expected = C.calendar(data, games, { feed: true });
     var url = null;
     try { url = new URL(data.feedFile, window.location.href); } catch (e) { url = null; }
@@ -733,11 +754,26 @@
       .then(function (body) {
         if (normalise(body).indexOf('BEGIN:VCALENDAR') !== 0) throw new Error('Not a calendar file');
         var webcal = url.href.replace(/^https?:/, 'webcal:');
-        sub.setAttribute('href', webcal);
+        var routes = subscribeRoutes(url.href, webcal);
+        var primary = routes[0];
+        sub.setAttribute('href', primary.href);
         sub.removeAttribute('aria-disabled');
-        $('#sub-google').setAttribute('href', 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(webcal));
-        $('#sub-copy').setAttribute('data-url', url.href);
+        if (primary.external) { sub.setAttribute('target', '_blank'); sub.setAttribute('rel', 'noopener'); }
+        $('#sub-label').textContent = 'Subscribe in ' + primary.label;
+        $('#sub-alt').innerHTML = routes.slice(1).map(function (o) {
+          return '<a href="' + esc(o.href) + '"' + (o.external ? ' target="_blank" rel="noopener"' : '') +
+            '>' + esc(o.label) + '</a>';
+        }).join('') +
+          '<button type="button" class="linkish" id="sub-copy" data-url="' + esc(url.href) + '">Copy link</button>';
         $('#sub-alt').hidden = false;
+        // Google has no add-by-URL anywhere in its phone apps, so on Android the
+        // link above only finishes the job on a computer. Say so rather than
+        // letting it look broken.
+        if (isAndroid) {
+          $('#sub-hint').textContent = 'Google Calendar only adds a subscription from a computer. ' +
+            'Open that link there once and it syncs back to this phone.';
+          $('#sub-hint').hidden = false;
+        }
         $('#alert-hint').hidden = !isApple || !(data.reminderMinutesBeforeArrival > 0);
         status.innerHTML = normalise(body) === normalise(expected) ? '' :
           '<p class="notice">The subscription feed is behind this page, so subscribers are missing the latest changes. ' +
@@ -748,7 +784,11 @@
   }
 
   if (!isApple) $('#sub-label').textContent = 'Subscribe to the calendar';
-  if (inApp) $('#inapp-note').hidden = false;
+  if (inApp) {
+    $('#inapp-note').textContent = 'Built-in browser blocks calendars, open in ' +
+      (isAndroid ? 'Chrome' : 'Safari') + ' for best results.';
+    $('#inapp-note').hidden = false;
+  }
   renderHeader();
   renderGrounds();
   renderFooter();
