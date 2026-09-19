@@ -36,6 +36,26 @@ Keeping the two in step matters: anyone subscribed to the calendar gets
 changes, replace it (180x180, no alpha, flat background) and run
 `python3 tools/make-images.py` to rebuild the manifest icons and the share card.
 
+## Getting to the ground
+
+Every venue offers Waze, Apple Maps and Google Maps, and all three **start
+navigating** rather than dropping a pin, so whichever one someone picks behaves
+the same way:
+
+| App | Link |
+| --- | --- |
+| Waze | `https://waze.com/ul?q=<ground, address>&navigate=yes` |
+| Apple Maps | `https://maps.apple.com/?daddr=<ground, address>&dirflg=d` |
+| Google Maps | `https://www.google.com/maps/dir/?api=1&destination=<ground, address>` |
+
+Waze's `/ul` is a universal link: it hands off to the app when installed and falls
+back to waze.com when not.
+
+The rows list every app except one already named by a control beside them, which
+is why the next-game card shows only Apple and Google under its own **Go with
+Waze** button. The venue name on each fixture is itself a Waze link, as a larger
+tap target than the row.
+
 ## Subscribing, per platform
 
 There is no single link that subscribes everywhere, so the page picks a route
