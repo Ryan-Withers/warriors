@@ -531,14 +531,21 @@
   var next = games.filter(function (g) { return !g.bye && !g.cancelled && until(g) >= 0; })[0] || null;
 
   function query(v) { return encodeURIComponent(v.ground + ', ' + v.address); }
-  // Universal link: hands off to the Waze app when it is installed and falls back
-  // to waze.com when it is not. navigate=yes starts the route rather than just
-  // dropping a pin, so it is one tap from here to driving.
-  function wazeUrl(v) { return 'https://waze.com/ul?q=' + query(v) + '&navigate=yes'; }
-  function placeUrl(v, provider) {
-    return provider === 'apple'
-      ? 'https://maps.apple.com/?q=' + query(v)
-      : 'https://www.google.com/maps/search/?api=1&query=' + query(v);
+  // All three start navigating rather than dropping a pin, so whichever app
+  // someone picks behaves the same way. Waze's /ul is a universal link: it hands
+  // off to the app when it is installed and falls back to waze.com when it is not.
+  function mapsUrl(v, provider) {
+    if (provider === 'apple') return 'https://maps.apple.com/?daddr=' + query(v) + '&dirflg=d';
+    if (provider === 'google') return 'https://www.google.com/maps/dir/?api=1&destination=' + query(v);
+    return 'https://waze.com/ul?q=' + query(v) + '&navigate=yes';
+  }
+  var MAPS = [{ k: 'waze', label: 'Waze' }, { k: 'apple', label: 'Apple Maps' }, { k: 'google', label: 'Google Maps' }];
+  // Lists every app except one already named by a labelled control beside it, so
+  // the next-game card does not repeat Waze under its own Go with Waze button.
+  function mapLinksHtml(v, named) {
+    return '<p class="maplinks">' + MAPS.filter(function (m) { return m.k !== named; }).map(function (m) {
+      return '<a href="' + mapsUrl(v, m.k) + '" target="_blank" rel="noopener">' + m.label + '</a>';
+    }).join('') + '</p>';
   }
 
   function relLabel(g) {
@@ -555,12 +562,13 @@
     return mins + ' minutes';
   }
 
-  function placeHtml(g, withField) {
+  function placeHtml(g, withField, withLinks) {
     var v = g.venueInfo;
     if (!v) return '';
-    return '<a class="place" href="' + wazeUrl(v) + '" target="_blank" rel="noopener">' + ICON.pin +
+    return '<a class="place" href="' + mapsUrl(v, 'waze') + '" target="_blank" rel="noopener">' + ICON.pin +
       '<span class="ground">' + esc(v.ground) + (withField && g.field ? ', ' + esc(g.field).replace(/ /g, '&nbsp;') : '') + '</span>' +
-      '<span class="addr">' + esc(v.address) + '</span></a>';
+      '<span class="addr">' + esc(v.address) + '</span></a>' +
+      (withLinks ? mapLinksHtml(v) : '');
   }
 
   function noticesHtml(g) {
@@ -595,7 +603,7 @@
     if (g.isDuty) chips.push('Duty team');
     return '<li class="' + cls + '" id="' + esc(g.id) + '">' + mark + '<div class="body">' + when +
       '<h3 class="vs">' + heading + '</h3>' +
-      (g.note ? '<p class="note">' + esc(g.note) + '</p>' : '') + times + placeHtml(g, true) +
+      (g.note ? '<p class="note">' + esc(g.note) + '</p>' : '') + times + placeHtml(g, true, true) +
       (chips.length ? '<p class="chips">' + chips.map(function (c) { return '<span class="chip">' + c + '</span>'; }).join('') + '</p>' : '') +
       noticesHtml(g) +
       '</div></li>';
@@ -622,8 +630,8 @@
       placeHtml(g) +
       (g.isDuty ? '<p class="chips"><span class="chip">Duty team</span></p>' : '') +
       noticesHtml(g) +
-      (v ? '<div class="actions"><a class="btn primary" href="' + wazeUrl(v) + '" target="_blank" rel="noopener">' +
-        ICON.nav + 'Go with Waze</a></div>' : '');
+      (v ? '<div class="actions"><a class="btn primary" href="' + mapsUrl(v, 'waze') + '" target="_blank" rel="noopener">' +
+        ICON.nav + 'Go with Waze</a></div>' + mapLinksHtml(v, 'waze') : '');
   }
 
   function renderHeader() {
@@ -650,9 +658,7 @@
         (others.length ? (nums.length ? ', ' : '') + others.join(', ') : '');
       return '<li><h3>' + esc(v.ground) + '</h3><p class="addr">' + esc(v.address) + '</p>' +
         '<p class="used">' + esc(v.town) + ': ' + esc(used) + '</p>' +
-        '<p class="maplinks"><a href="' + wazeUrl(v) + '" target="_blank" rel="noopener">Waze</a>' +
-        '<a href="' + placeUrl(v, 'apple') + '" target="_blank" rel="noopener">Apple Maps</a>' +
-        '<a href="' + placeUrl(v, 'google') + '" target="_blank" rel="noopener">Google Maps</a></p></li>';
+        mapLinksHtml(v) + '</li>';
     }).join('');
   }
 
