@@ -36,6 +36,31 @@ Keeping the two in step matters: anyone subscribed to the calendar gets
 changes, replace it (180x180, no alpha, flat background) and run
 `python3 tools/make-images.py` to rebuild the manifest icons and the share card.
 
+## Recording a result
+
+Add a `score` to the fixture in the `#draw-data` JSON, written home and away as
+the result is posted:
+
+```json
+{ "id": "r1", "round": "1", ..., "home": "Warriors", "away": "Buccaneers",
+  "score": { "home": 8, "away": 12 } }
+```
+
+The page works out the rest from the team's side, so that fixture shows **Lost**
+and a final score of **8 - 12**. Won, lost and drew are derived by comparing the
+two numbers, and home or away is handled by reading `home`/`away` against `team`,
+so the score is always written the way it is posted, never flipped by hand.
+
+A fixture with a score:
+
+- shows the outcome where the countdown used to be, instead of "Played"
+- replaces arrive and kickoff with the final score, which is what matters afterwards
+- stays at full brightness rather than dimming like other past fixtures
+- drops out of the next-game card, so recording a result on match day moves it on
+
+A bye or a cancelled fixture ignores any score. Scores do **not** go into
+`warriors.ics`, so recording one never puts the feed out of step with the page.
+
 ## Getting to the ground
 
 Every venue offers Waze, Apple Maps and Google Maps, and all three **start
