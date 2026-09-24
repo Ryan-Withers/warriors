@@ -142,6 +142,12 @@
   .mark { font: 700 1.875rem/1 var(--display); letter-spacing: -.03em; }
   .marker { display: block; width: .75rem; height: .75rem; margin-top: .625rem; background: var(--gold); }
   .round.past .mark, .round.past .body { opacity: .5; }
+  /* A finished game with a score is worth reading, so it is not dimmed. */
+  .round.past.played .mark, .round.past.played .body { opacity: 1; }
+  .rel.outcome { padding: .1rem .5rem; border-radius: 2px; }
+  .rel.outcome.won { background: var(--gold); color: var(--gold-ink); }
+  .rel.outcome.lost, .rel.outcome.drew { border: 1px solid var(--chalk-soft); color: var(--chalk-soft); }
+  .times .final b { color: var(--chalk); white-space: nowrap; }
   .when { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-weight: 700; }
   .rel { font-size: .875rem; font-weight: 700; color: var(--chalk-soft); white-space: nowrap; }
   .rel.hot { padding: .1rem .5rem; border-radius: 2px; background: var(--gold); color: var(--gold-ink); }
@@ -286,7 +292,7 @@
     "footscray": { "town": "Footscray", "ground": "Henry Turner Memorial Reserve South", "address": "Farnsworth Avenue, Footscray VIC 3011" }
   },
   "games": [
-    { "id": "r1",  "round": "1",  "date": "2026-09-19", "kickoff": "11:00", "home": "Warriors",  "away": "Buccaneers", "venue": "bendigo",   "field": "Field 1", "duty": "Warriors" },
+    { "id": "r1",  "round": "1",  "date": "2026-09-19", "kickoff": "11:00", "home": "Warriors",  "away": "Buccaneers", "venue": "bendigo",   "field": "Field 1", "duty": "Warriors", "score": { "home": 8, "away": 12 } },
     { "id": "r2",  "round": "2",  "date": "2026-09-25", "kickoff": "14:00", "home": "Predators", "away": "Warriors",   "venue": "melton",    "field": "Field 2", "duty": "Predators" },
     { "id": "r3",  "round": "3",  "date": "2026-10-04", "kickoff": "14:00", "home": "Warriors",  "away": "Crusaders",  "venue": "footscray", "field": "",        "duty": "Warriors" },
     { "id": "r4",  "round": "4",  "date": "2026-10-10", "bye": true },
@@ -385,6 +391,16 @@
         g.koAt = wall(g.date, ko);
         g.arriveAt = wall(g.date, ko - data.arriveMinutesBefore);
         g.endAt = wall(g.date, ko + data.gameMinutes);
+      }
+      // Scores are recorded home/away as they are posted; the page reads them from
+      // the team's side so a result says "lost 8-12", not "8-12, work it out".
+      var sc = raw.score;
+      g.played = !!sc && typeof sc.home === 'number' && typeof sc.away === 'number' && !g.bye && !g.cancelled;
+      if (g.played) {
+        g.ourScore = g.isHome ? sc.home : sc.away;
+        g.theirScore = g.isHome ? sc.away : sc.home;
+        g.outcome = g.ourScore > g.theirScore ? 'won' : (g.ourScore < g.theirScore ? 'lost' : 'drew');
+        g.outcomeLabel = g.outcome === 'won' ? 'Won' : (g.outcome === 'lost' ? 'Lost' : 'Drew');
       }
       g.sequence = g.changes.length;
       g.modified = [data.fixtureReleased].concat(g.changes.map(function (c) { return c.on; })).sort().pop();
@@ -528,7 +544,8 @@
   var today = melbourneToday();
   function dayNo(s) { var p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]) / 864e5; }
   function until(g) { return dayNo(g.date) - dayNo(today); }
-  var next = games.filter(function (g) { return !g.bye && !g.cancelled && until(g) >= 0; })[0] || null;
+  // A game with a score is done, so recording one on match day moves the card on.
+  var next = games.filter(function (g) { return !g.bye && !g.cancelled && !g.played && until(g) >= 0; })[0] || null;
 
   function query(v) { return encodeURIComponent(v.ground + ', ' + v.address); }
   // All three start navigating rather than dropping a pin, so whichever app
@@ -582,9 +599,12 @@
 
   function roundHtml(g) {
     var n = until(g), isNext = g === next;
-    var cls = 'round' + (n < 0 ? ' past' : '') + (isNext ? ' is-next' : '') + (g.bye ? ' bye' : '') + (g.cancelled ? ' cancelled' : '');
+    var cls = 'round' + (n < 0 ? ' past' : '') + (isNext ? ' is-next' : '') + (g.bye ? ' bye' : '') +
+      (g.cancelled ? ' cancelled' : '') + (g.played ? ' played' : '');
     var mark = '<div class="mark" aria-hidden="true">' + esc(g.mark) + (isNext ? '<span class="marker"></span>' : '') + '</div>';
-    var rel = isNext ? '<span class="rel hot">' + esc(relLabel(g)) + '</span>' : (n < 0 && !g.bye ? '<span class="rel">Played</span>' : '');
+    var rel = g.played ? '<span class="rel outcome ' + g.outcome + '">' + esc(g.outcomeLabel) + '</span>'
+      : isNext ? '<span class="rel hot">' + esc(relLabel(g)) + '</span>'
+      : (n < 0 && !g.bye ? '<span class="rel">Played</span>' : '');
     var when = '<p class="when"><span>' + esc(C.dayLabel(g.date)) + '</span>' + rel + '</p>';
     if (g.bye) {
       return '<li class="' + cls + '" id="' + esc(g.id) + '">' + mark + '<div class="body">' + when +
@@ -593,7 +613,11 @@
     var heading = g.opponent
       ? '<span class="sr">' + esc(g.label) + ': </span>v ' + esc(g.opponent) + '<span class="ha">' + (g.isHome ? 'Home' : 'Away') + '</span>'
       : esc(g.label);
-    var times = g.hasTime
+    var times = g.played
+      ? '<div class="times"><p class="final"><span>Final</span><b>' +
+        '<span class="sr">' + esc(data.team) + ' </span>' + g.ourScore + ' \u2013 ' + g.theirScore +
+        '<span class="sr"> ' + esc(g.opponent) + '</span></b></p></div>'
+      : g.hasTime
       ? '<div class="times"><p class="arrive"><span>Arrive</span><b>' + C.clock(g.arriveAt) + '</b></p>' +
         '<p class="ko"><span>Kickoff</span><b>' + C.clock(g.koAt) + '</b></p></div>'
       : '<p class="tba">' + (g.venueInfo ? 'Time TBA' : 'Time and ground TBA') + '</p>';
