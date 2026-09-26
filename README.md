@@ -58,8 +58,21 @@ A fixture with a score:
 - stays at full brightness rather than dimming like other past fixtures
 - drops out of the next-game card, so recording a result on match day moves it on
 
-A bye or a cancelled fixture ignores any score. Scores do **not** go into
-`warriors.ics`, so recording one never puts the feed out of step with the page.
+The header keeps a running **season record**, such as "Won 1, lost 1", counted
+from the same results the fixture cards show, so the two can never disagree.
+"Drew" only appears once there is a draw, and the line stays hidden until the
+first result is in.
+
+A score is ignored, and left out of the record, when:
+
+- the fixture is a bye or cancelled
+- either number is missing or is not a number
+- **neither `home` nor `away` is the team.** The finals start with no teams, so
+  set both before adding a finals score. Without this rule a score entered early
+  would be read as us being the away side and counted as a loss.
+
+Scores do **not** go into `warriors.ics`, so recording one never puts the feed
+out of step with the page.
 
 ## Getting to the ground
 
