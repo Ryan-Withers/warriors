@@ -90,21 +90,22 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:afv2026-mens-r5@warriors-draw
-DTSTAMP:20260820T000000Z
-LAST-MODIFIED:20260820T000000Z
-SEQUENCE:0
-DTSTART;TZID=Australia/Melbourne:20261018T123000
-DTEND;TZID=Australia/Melbourne:20261018T163000
-SUMMARY:🏈 Rangers v Warriors (KO 2:00pm)
+DTSTAMP:20261015T000000Z
+LAST-MODIFIED:20261015T000000Z
+SEQUENCE:1
+DTSTART;TZID=Australia/Melbourne:20261018T140000
+DTEND;TZID=Australia/Melbourne:20261018T180000
+SUMMARY:🏈 Rangers v Warriors (KO 3:30pm)
 LOCATION:Ranger Field\, 2 Springfield Avenue\, Croydon VIC 3136
-DESCRIPTION:Round 5\, AFV 2026 Men's\nArrive 12:30pm\, kickoff 2:00pm\nRang
- er Field\, Croydon\nAFV fixture Version 1
+DESCRIPTION:Round 5\, AFV 2026 Men's\nArrive 2:00pm\, kickoff 3:30pm\nRange
+ r Field\, Croydon\nChanged Thu 15 Oct: Kickoff moved from 2:00pm to 3:30pm
+ \nAFV fixture Version 1
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT120M
-DESCRIPTION:v Rangers: be at Ranger Field by 12:30pm
+DESCRIPTION:v Rangers: be at Ranger Field by 2:00pm
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
