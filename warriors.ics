@@ -110,21 +110,23 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:afv2026-mens-r6@warriors-draw
-DTSTAMP:20260820T000000Z
-LAST-MODIFIED:20260820T000000Z
-SEQUENCE:0
-DTSTART;TZID=Australia/Melbourne:20261024T120000
-DTEND;TZID=Australia/Melbourne:20261024T160000
-SUMMARY:🏈 Predators v Warriors (KO 1:30pm)
-LOCATION:MacPherson Park\, 783 Coburns Road\, Harkness VIC 3337
-DESCRIPTION:Round 6\, AFV 2026 Men's\nArrive 12:00pm\, kickoff 1:30pm\nMacP
- herson Park\, Melton (Field 2)\nAFV fixture Version 1
+DTSTAMP:20261021T000000Z
+LAST-MODIFIED:20261021T000000Z
+SEQUENCE:1
+DTSTART;TZID=Australia/Melbourne:20261024T133000
+DTEND;TZID=Australia/Melbourne:20261024T173000
+SUMMARY:🏈 Predators v Warriors (KO 3:00pm)
+LOCATION:Hendy Street Reserve\, 93 Hendy Street\, Corio VIC 3214
+DESCRIPTION:Round 6\, AFV 2026 Men's\nArrive 1:30pm\, kickoff 3:00pm\nHendy
+  Street Reserve\, Geelong (Field 1)\nChanged Wed 21 Oct: Moved from MacPhe
+ rson Park\, Melton to Hendy Street Reserve\, Corio\, and kickoff from 1:30
+ pm to 3:00pm\nAFV fixture Version 1
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT120M
-DESCRIPTION:v Predators: be at MacPherson Park by 12:00pm
+DESCRIPTION:v Predators: be at Hendy Street Reserve by 1:30pm
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
