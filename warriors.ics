@@ -110,24 +110,20 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:afv2026-mens-r6@warriors-draw
-DTSTAMP:20261021T000000Z
-LAST-MODIFIED:20261021T000000Z
-SEQUENCE:1
+DTSTAMP:20261023T000000Z
+LAST-MODIFIED:20261023T000000Z
+SEQUENCE:2
 DTSTART;TZID=Australia/Melbourne:20261024T133000
 DTEND;TZID=Australia/Melbourne:20261024T173000
-SUMMARY:🏈 Predators v Warriors (KO 3:00pm)
+SUMMARY:Forfeit\, no game: 🏈 Predators v Warriors (KO 3:00pm)
 LOCATION:Hendy Street Reserve\, 93 Hendy Street\, Corio VIC 3214
 DESCRIPTION:Round 6\, AFV 2026 Men's\nArrive 1:30pm\, kickoff 3:00pm\nHendy
   Street Reserve\, Geelong (Field 1)\nChanged Wed 21 Oct: Moved from MacPhe
  rson Park\, Melton to Hendy Street Reserve\, Corio\, and kickoff from 1:30
- pm to 3:00pm\nAFV fixture Version 1
-STATUS:CONFIRMED
-TRANSP:OPAQUE
-BEGIN:VALARM
-ACTION:DISPLAY
-TRIGGER:-PT120M
-DESCRIPTION:v Predators: be at Hendy Street Reserve by 1:30pm
-END:VALARM
+ pm to 3:00pm\nChanged Fri 23 Oct: Predators forfeited. No game.\nAFV fixtu
+ re Version 1
+STATUS:CANCELLED
+TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:afv2026-mens-r7@warriors-draw
