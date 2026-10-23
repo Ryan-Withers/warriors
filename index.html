@@ -163,7 +163,8 @@
   .note { margin-bottom: .625rem; }
   .place { display: grid; grid-template-columns: 1.125rem minmax(0, 1fr); column-gap: .5rem; text-decoration: none; }
   .place svg { margin-top: .2rem; }
-  .place .ground { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .place .ground { font-weight: 700; }
+  a.place .ground { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   .place .addr { grid-column: 2; font-size: .9375rem; color: var(--chalk-soft); }
   .chips { display: flex; flex-wrap: wrap; gap: .375rem; margin-top: .875rem; }
   .chip { padding: .1rem .5rem; border: 1px solid var(--chalk-soft); border-radius: 2px; font-size: .8125rem; font-weight: 700; }
@@ -267,6 +268,9 @@
                "changes": [{ "on": "2026-10-01", "note": "Kickoff moved from 2:00pm to 3:00pm" }]
              The page flags the game and calendars receive a newer version of the event.
   cancelled  Set to true to cancel a game. It stays listed, struck through.
+  forfeit    The team that forfeited, e.g. "forfeit": "Predators", plus a changes
+             entry. It is not played, so calendars mark it cancelled and drop the
+             reminder, but it counts as a result: a win, or a loss if it names us.
   finals     Fill in kickoff, venue, home and away once AFV confirms them.
 
   After editing, the page compares itself with warriors.ics. If the feed is out
@@ -301,8 +305,9 @@
     { "id": "r4",  "round": "4",  "date": "2026-10-10", "bye": true },
     { "id": "r5",  "round": "5",  "date": "2026-10-18", "kickoff": "15:30", "home": "Rangers",   "away": "Warriors",   "venue": "croydon",   "field": "",        "duty": "Rangers", "score": { "home": 0, "away": 36 },
       "changes": [{ "on": "2026-10-15", "note": "Kickoff moved from 2:00pm to 3:30pm" }] },
-    { "id": "r6",  "round": "6",  "date": "2026-10-24", "kickoff": "15:00", "home": "Predators", "away": "Warriors",   "venue": "geelong",   "field": "Field 1", "duty": "Predators",
-      "changes": [{ "on": "2026-10-21", "note": "Moved from MacPherson Park, Melton to Hendy Street Reserve, Corio, and kickoff from 1:30pm to 3:00pm" }] },
+    { "id": "r6",  "round": "6",  "date": "2026-10-24", "kickoff": "15:00", "home": "Predators", "away": "Warriors",   "venue": "geelong",   "field": "Field 1", "duty": "Predators", "forfeit": "Predators",
+      "changes": [{ "on": "2026-10-21", "note": "Moved from MacPherson Park, Melton to Hendy Street Reserve, Corio, and kickoff from 1:30pm to 3:00pm" },
+                  { "on": "2026-10-23", "note": "Predators forfeited. No game." }] },
     { "id": "r7",  "round": "7",  "date": "2026-11-01", "kickoff": "14:30", "home": "Chargers",  "away": "Warriors",   "venue": "melton",    "field": "Field 1", "duty": "Chargers" },
     { "id": "r8",  "round": "8",  "date": "2026-11-08", "kickoff": "14:30", "home": "Warriors",  "away": "Wolves",     "venue": "geelong",   "field": "Field 2", "duty": "Warriors" },
     { "id": "r9",  "round": "9",  "date": "2026-11-14", "kickoff": "12:00", "home": "Warriors",  "away": "Buccaneers", "venue": "melton",    "field": "Field 2", "duty": "Warriors" },
@@ -380,6 +385,10 @@
       g.bye = !!raw.bye;
       g.isFinal = !!raw.final;
       g.cancelled = !!raw.cancelled;
+      // A forfeit is not played, so it shares every "nobody turns up" behaviour
+      // with a cancellation. Unlike one, it is still a result.
+      g.forfeit = typeof raw.forfeit === 'string' ? raw.forfeit : '';
+      g.noGame = g.cancelled || !!g.forfeit;
       g.changes = raw.changes || [];
       // Stable calendar identity: season + permanent game id. Never derived from date, time or opponent.
       g.uid = data.season + '-' + g.id + '@' + team.toLowerCase() + '-draw';
@@ -403,14 +412,21 @@
       // A score only means something once we know which side we were on. The
       // finals have no teams until they are set, and without this a score entered
       // early would be read as us being the away side and counted as a loss.
-      g.played = !!sc && typeof sc.home === 'number' && typeof sc.away === 'number' &&
-        !g.bye && !g.cancelled && (g.home === team || g.away === team);
-      if (g.played) {
-        g.ourScore = g.isHome ? sc.home : sc.away;
-        g.theirScore = g.isHome ? sc.away : sc.home;
-        g.outcome = g.ourScore > g.theirScore ? 'won' : (g.ourScore < g.theirScore ? 'lost' : 'drew');
-        g.outcomeLabel = g.outcome === 'won' ? 'Won' : (g.outcome === 'lost' ? 'Lost' : 'Drew');
+      var known = !g.bye && !g.cancelled && (g.home === team || g.away === team);
+      if (g.forfeit) {
+        // Whoever forfeits loses. It must name one of the two sides, so a typo
+        // cannot hand out a result.
+        g.played = known && (g.forfeit === g.home || g.forfeit === g.away);
+        if (g.played) g.outcome = g.forfeit === team ? 'lost' : 'won';
+      } else {
+        g.played = known && !!sc && typeof sc.home === 'number' && typeof sc.away === 'number';
+        if (g.played) {
+          g.ourScore = g.isHome ? sc.home : sc.away;
+          g.theirScore = g.isHome ? sc.away : sc.home;
+          g.outcome = g.ourScore > g.theirScore ? 'won' : (g.ourScore < g.theirScore ? 'lost' : 'drew');
+        }
       }
+      if (g.played) g.outcomeLabel = g.outcome === 'won' ? 'Won' : (g.outcome === 'lost' ? 'Lost' : 'Drew');
       g.sequence = g.changes.length;
       g.modified = [data.fixtureReleased].concat(g.changes.map(function (c) { return c.on; })).sort().pop();
       g.dst = dstNote(g.date);
@@ -437,7 +453,7 @@
     var t = '\uD83C\uDFC8 ';
     t += g.opponent ? (g.isFinal ? g.label + ': ' : '') + g.home + ' v ' + g.away : data.team + ' ' + g.label;
     t += g.hasTime ? ' (KO ' + clock(g.koAt) + ')' : ' (TBA)';
-    return g.cancelled ? 'Cancelled: ' + t : t;
+    return g.noGame ? (g.forfeit ? 'Forfeit, no game: ' : 'Cancelled: ') + t : t;
   }
 
   function describe(g, data) {
@@ -468,10 +484,11 @@
     if (v) L.push('LOCATION:' + text(v.ground + ', ' + v.address));
     L.push('DESCRIPTION:' + text(describe(g, data)));
     if (data.siteUrl) L.push('URL:' + data.siteUrl);
-    L.push('STATUS:' + (g.cancelled ? 'CANCELLED' : g.hasTime ? 'CONFIRMED' : 'TENTATIVE'));
-    L.push('TRANSP:' + (g.hasTime && !g.cancelled ? 'OPAQUE' : 'TRANSPARENT'));
+    L.push('STATUS:' + (g.noGame ? 'CANCELLED' : g.hasTime ? 'CONFIRMED' : 'TENTATIVE'));
+    L.push('TRANSP:' + (g.hasTime && !g.noGame ? 'OPAQUE' : 'TRANSPARENT'));
     var remind = +data.reminderMinutesBeforeArrival || 0;
-    if (g.hasTime && !g.cancelled && remind > 0) {
+    // No game, no "time to leave" alert.
+    if (g.hasTime && !g.noGame && remind > 0) {
       L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-PT' + remind + 'M',
         'DESCRIPTION:' + text((g.opponent ? 'v ' + g.opponent + ': b' : 'B') + 'e at ' + (v ? v.ground : 'the ground') + ' by ' + clock(g.arriveAt)),
         'END:VALARM');
@@ -554,7 +571,7 @@
   function dayNo(s) { var p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]) / 864e5; }
   function until(g) { return dayNo(g.date) - dayNo(today); }
   // A game with a score is done, so recording one on match day moves the card on.
-  var next = games.filter(function (g) { return !g.bye && !g.cancelled && !g.played && until(g) >= 0; })[0] || null;
+  var next = games.filter(function (g) { return !g.bye && !g.noGame && !g.played && until(g) >= 0; })[0] || null;
 
   function query(v) { return encodeURIComponent(v.ground + ', ' + v.address); }
   // All three start navigating rather than dropping a pin, so whichever app
@@ -591,9 +608,13 @@
   function placeHtml(g, withField, withLinks) {
     var v = g.venueInfo;
     if (!v) return '';
-    return '<a class="place" href="' + mapsUrl(v, 'waze') + '" target="_blank" rel="noopener">' + ICON.pin +
+    var inner = ICON.pin +
       '<span class="ground">' + esc(v.ground) + (withField && g.field ? ', ' + esc(g.field).replace(/ /g, '&nbsp;') : '') + '</span>' +
-      '<span class="addr">' + esc(v.address) + '</span></a>' +
+      '<span class="addr">' + esc(v.address) + '</span>';
+    // Nobody should be routed to a game that is not on, so the ground stays as
+    // a record of where it was due but loses its directions.
+    if (g.noGame) return '<div class="place">' + inner + '</div>';
+    return '<a class="place" href="' + mapsUrl(v, 'waze') + '" target="_blank" rel="noopener">' + inner + '</a>' +
       (withLinks ? mapLinksHtml(v) : '');
   }
 
@@ -604,7 +625,7 @@
     });
     // "Clocks go forward" is an instruction for the morning of the game, so it
     // stops showing once that day has passed. The calendar event keeps it.
-    if (g.dst && !g.cancelled && until(g) >= 0) out.push('<p class="notice">' + esc(g.dst) + '</p>');
+    if (g.dst && !g.noGame && until(g) >= 0) out.push('<p class="notice">' + esc(g.dst) + '</p>');
     return out.join('');
   }
 
@@ -624,7 +645,10 @@
     var heading = g.opponent
       ? '<span class="sr">' + esc(g.label) + ': </span>v ' + esc(g.opponent) + '<span class="ha">' + (g.isHome ? 'Home' : 'Away') + '</span>'
       : esc(g.label);
-    var times = g.played
+    var times = g.forfeit
+      ? '<div class="times"><p class="final"><span>Final</span><b>Forfeit' +
+        '<span class="sr">, ' + esc(g.forfeit) + ' forfeited</span></b></p></div>'
+      : g.played
       ? '<div class="times"><p class="final"><span>Final</span><b>' +
         '<span class="sr">' + esc(data.team) + ' </span>' + g.ourScore + ' \u2013 ' + g.theirScore +
         '<span class="sr"> ' + esc(g.opponent) + '</span></b></p></div>'
@@ -693,11 +717,14 @@
   }
 
   function renderGrounds() {
+    // Only games that are on: a forfeit or cancellation is not played at its
+    // ground, and a ground left with nothing on drops off the list.
+    var on = games.filter(function (g) { return !g.noGame; });
     var order = [];
-    games.forEach(function (g) { if (g.venueInfo && order.indexOf(g.venue) < 0) order.push(g.venue); });
+    on.forEach(function (g) { if (g.venueInfo && order.indexOf(g.venue) < 0) order.push(g.venue); });
     $('#grounds').innerHTML = order.map(function (key) {
       var v = data.venues[key];
-      var here = games.filter(function (g) { return g.venue === key; });
+      var here = on.filter(function (g) { return g.venue === key; });
       var nums = here.filter(function (g) { return /^\d+$/.test(g.round); }).map(function (g) { return g.round; });
       var others = here.filter(function (g) { return !/^\d+$/.test(g.round); }).map(function (g) { return g.label; });
       var used = (nums.length ? (nums.length > 1 ? 'Rounds ' : 'Round ') + nums.join(', ') : '') +

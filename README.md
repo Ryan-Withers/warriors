@@ -74,6 +74,30 @@ A score is ignored, and left out of the record, when:
 Scores do **not** go into `warriors.ics`, so recording one never puts the feed
 out of step with the page.
 
+### Forfeits
+
+Set `forfeit` to the team that forfeited and add a dated `changes` entry:
+
+```json
+"forfeit": "Predators",
+"changes": [{ "on": "2026-10-23", "note": "Predators forfeited. No game." }]
+```
+
+The fixture shows **Won** (or **Lost** if the forfeit names us) with "Forfeit"
+where the score would be, and it counts toward the record. Because no game is
+played, a forfeit also does everything a cancellation does:
+
+- the calendar event is marked cancelled, its "be there by" reminder is removed
+  and the time stops showing as busy, so **regenerate `warriors.ics`**
+- it drops out of the next-game card
+- the ground stays on the card as plain text, with no directions
+- it drops out of the Grounds list
+
+A forfeit naming a team that is not in the fixture is still treated as no game
+but gives no result, so a typo cannot hand out a win. A forfeit overrides any
+score on the same fixture. A plain `cancelled` game is struck through and gives
+no result.
+
 ## Getting to the ground
 
 Every venue offers Waze, Apple Maps and Google Maps, and all three **start
