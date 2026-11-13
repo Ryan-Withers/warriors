@@ -182,5 +182,12 @@ Controls on the page:
 Assignments the playbook doesn't spell out are tagged *inferred* on the page,
 and anything from the WhatsApp thread is tagged *per Luke*.
 
+A card gets a red border and a **Doesn't work as drawn** warning when the rules
+leave a defender at the point of attack unblocked (for example Duo into a 3T
+and 5T with no TE beside them, or Duo toward the TE without Special, where the
+90 Sam is free). The group heading lists those fronts. Turning on Special for a
+play that has no Special version (Counter, or anything with no TE) shows a
+**No Special version** note on each card instead of quietly changing nothing.
+
 The page is `noindex` and nothing on the draw links to it, but like the rest of
 this repo it is public to anyone with the link.
