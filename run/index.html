@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#8B2937">
+<title>Warriors Run Plays vs Fronts</title>
+<meta name="description" content="Warriors outside zone, counter and duo against Under, Over and 5225 fronts, with the Special adjustments.">
+<link rel="icon" type="image/png" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Run plays">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Warriors Gridiron">
+<meta property="og:title" content="Warriors run plays vs fronts">
+<meta property="og:description" content="Outside zone, counter and duo against Under, Over and 5225, with Special.">
+<meta property="og:url" content="https://ryan-withers.github.io/warriors/run/">
+<meta property="og:locale" content="en_AU">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Club maroon and gold around playbook-style white field diagrams.
+     Layout: controls, then one group per call with a card per front (3 across on desktop, stacked on phones). */
+  --maroon: #8B2937;
+  --maroon-deep: #5E1824;
+  --gold: #EEB542;
+  --bg: #F5F1F0;
+  --card: #FFFFFF;
+  --ink: #1E191A;
+  --muted: #6C6264;
+  --rule: #E5DCDB;
+  --chip: #EEE6E5;
+  --chip-ink: #3A3133;
+  --field: #FFFFFF;
+  --field-line: #DCDCDC;
+  --los: #BDBDBD;
+  --hash: #D4D4D4;
+  --ol: #3B3B3B;
+  --ol-fill: #DCDCDC;
+  --ol-text: #2A2A2A;
+  --x: #1E1E1E;
+  --h: #D03636;
+  --y-line: #C29812;
+  --y-fill: #F6DD66;
+  --y-text: #4D3B00;
+  --z: #3366D6;
+  --q: #9230D5;
+  --r: #22857A;
+  --def: #2B2B2B;
+  --def-fill: #FFFFFF;
+  --flag: #C62828;
+  --me: #EEB542;
+  --font-d: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-b: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141113; --card: #1D191B; --ink: #F2EDEC; --muted: #A99FA1; --rule: #342C2E;
+    --chip: #2A2426; --chip-ink: #EAE2E3;
+    --field: #19181A; --field-line: #302F33; --los: #4A484F; --hash: #3A393E;
+    --ol: #D8D8D8; --ol-fill: #48484D; --ol-text: #F2F2F2;
+    --x: #EDEDED; --h: #FF7070; --y-line: #F0C840; --y-fill: #E8CE52; --y-text: #3A2D00;
+    --z: #7BA5FF; --q: #CB89FF; --r: #4FC7B7;
+    --def: #E3E3E3; --def-fill: #19181A; --flag: #FF6A6A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141113; --card: #1D191B; --ink: #F2EDEC; --muted: #A99FA1; --rule: #342C2E;
+  --chip: #2A2426; --chip-ink: #EAE2E3;
+  --field: #19181A; --field-line: #302F33; --los: #4A484F; --hash: #3A393E;
+  --ol: #D8D8D8; --ol-fill: #48484D; --ol-text: #F2F2F2;
+  --x: #EDEDED; --h: #FF7070; --y-line: #F0C840; --y-fill: #E8CE52; --y-text: #3A2D00;
+  --z: #7BA5FF; --q: #CB89FF; --r: #4FC7B7;
+  --def: #E3E3E3; --def-fill: #19181A; --flag: #FF6A6A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--font-b); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+h1, h2, h3 { font-family: var(--font-d); text-wrap: balance; margin: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* header */
+.top { background: var(--maroon); color: #FFF7EA; border-bottom: 4px solid var(--gold); }
+.top .wrap { padding-top: 18px; padding-bottom: 16px; }
+.back { display: inline-block; margin: 0 0 8px; color: var(--gold); font: 600 13px/1 var(--font-b); text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.eyebrow { margin: 0 0 4px; font: 600 12px/1.2 var(--font-b); letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+.top h1 { font-weight: 700; font-size: clamp(26px, 6vw, 38px); line-height: 1.02; letter-spacing: .01em; }
+.top .sub { margin: 8px 0 0; max-width: 62ch; color: #F6DCD7; font-size: 14.5px; }
+
+/* controls */
+.controls { margin: 16px 0 10px; display: grid; gap: 10px; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--chip); border-radius: 10px; padding: 4px; gap: 4px; }
+.seg button { border: 0; background: transparent; border-radius: 7px; min-height: 44px; font: 700 17px/1 var(--font-d); letter-spacing: .03em; text-transform: uppercase; color: var(--chip-ink); cursor: pointer; }
+.seg button small { display: block; font: 500 11.5px/1.2 var(--font-b); letter-spacing: 0; text-transform: none; color: var(--muted); margin-top: 3px; }
+.seg button[aria-selected="true"] { background: var(--maroon); color: #FFF7EA; box-shadow: 0 1px 2px rgba(0,0,0,.18); }
+.seg button[aria-selected="true"] small { color: var(--gold); }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lbl { width: 46px; font: 600 12px/1 var(--font-b); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.chips button, .tog { border: 1px solid var(--rule); background: var(--card); color: var(--ink); border-radius: 999px; min-height: 38px; padding: 0 14px; font: 600 14px/1 var(--font-b); cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.toggles { gap: 6px; }
+.tog { display: inline-flex; align-items: center; gap: 7px; }
+.tog::before { content: ""; width: 26px; height: 15px; border-radius: 999px; background: var(--chip); border: 1px solid var(--rule); box-shadow: inset -11px 0 0 2px var(--card); transition: box-shadow .15s; }
+.tog[aria-pressed="true"] { border-color: var(--maroon); }
+.tog[aria-pressed="true"]::before { background: var(--maroon); border-color: var(--maroon); box-shadow: inset 11px 0 0 2px var(--maroon), inset 0 0 0 1px #fff; }
+#t-special[aria-pressed="true"] { background: var(--gold); color: #3A1A00; border-color: #C9921F; }
+.tog:disabled { opacity: .45; cursor: not-allowed; }
+.me { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font: 600 13px/1 var(--font-b); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.me select { min-height: 38px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); padding: 0 12px; font: 700 14px/1 var(--font-b); color: var(--ink); text-transform: none; letter-spacing: 0; }
+.mode-note { margin: 0; padding: 9px 12px; border-left: 4px solid var(--gold); background: var(--card); border-radius: 0 8px 8px 0; font-size: 13.5px; color: var(--ink); }
+.mode-note[hidden] { display: none; }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0 4px; padding: 10px 12px; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.legend svg { width: 30px; height: 16px; overflow: visible; }
+
+/* groups and cards */
+.grp { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--maroon); }
+.grp span { font-weight: 700; font-size: 24px; letter-spacing: .02em; color: var(--maroon); }
+.grp small { font: 500 13.5px/1.3 var(--font-b); color: var(--muted); }
+:root[data-theme="dark"] .grp span { color: var(--gold); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .grp span { color: var(--gold); } }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--maroon); padding: 9px 12px; }
+.card-h h3 { color: var(--gold); font-size: 21px; font-weight: 700; letter-spacing: .03em; line-height: 1.05; }
+.card-h .form { color: #F6DCD7; font-weight: 600; font-size: 15px; letter-spacing: .04em; }
+.vs { flex: none; background: var(--gold); color: var(--maroon-deep); font: 700 14px/1 var(--font-d); letter-spacing: .05em; padding: 5px 9px; border-radius: 6px; }
+.card-sub { margin: 0; padding: 8px 12px 0; font-size: 12.5px; color: var(--muted); }
+.card-sub .tech { font-weight: 600; color: var(--ink); white-space: nowrap; }
+.dot-sep { opacity: .5; padding: 0 2px; }
+.sp { display: inline-block; background: var(--gold); color: #3A1A00; font: 700 11px/1 var(--font-b); letter-spacing: .06em; text-transform: uppercase; padding: 3px 6px; border-radius: 4px; margin-left: 2px; vertical-align: 1px; }
+.field { margin: 8px 10px 0; }
+.field svg { display: block; width: 100%; height: auto; border-radius: 7px; border: 1px solid var(--rule); }
+
+/* diagram */
+.fld { fill: var(--field); }
+.yl { stroke: var(--field-line); stroke-width: 1; }
+.los { stroke: var(--los); stroke-width: 1.2; }
+.hash { stroke: var(--hash); stroke-width: 1; }
+.ln { fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.ln.dash { stroke-dasharray: 4.5 3.2; }
+.ln.head { stroke-width: 1; }
+.ln.dot { fill: var(--field); stroke-width: 1.7; }
+.ln.me { stroke-width: 3.4; }
+.c-ol { stroke: var(--ol); } .head.c-ol { fill: var(--ol); }
+.c-y { stroke: var(--y-line); } .head.c-y { fill: var(--y-line); }
+.c-h { stroke: var(--h); } .head.c-h { fill: var(--h); }
+.c-x { stroke: var(--x); } .head.c-x { fill: var(--x); }
+.c-z { stroke: var(--z); } .head.c-z { fill: var(--z); }
+.c-q { stroke: var(--q); } .head.c-q { fill: var(--q); }
+.c-r { stroke: var(--r); stroke-width: 2.2; } .head.c-r { fill: var(--r); }
+.def { fill: var(--def-fill); stroke: var(--def); stroke-width: 1.6; stroke-linejoin: round; }
+.def-dl { stroke-width: 1.9; }
+.dlab { fill: var(--def); font: 700 10.5px var(--font-d); }
+.align { fill: var(--muted); font: 700 9.5px var(--font-d); }
+.pl { stroke-width: 1.9; }
+.p-ol.pl { fill: var(--ol-fill); stroke: var(--ol); }
+.p-y.pl { fill: var(--y-fill); stroke: var(--y-line); }
+.p-x.pl { fill: var(--field); stroke: var(--x); }
+.p-h.pl { fill: var(--field); stroke: var(--h); }
+.p-z.pl { fill: var(--field); stroke: var(--z); }
+.p-q.pl { fill: var(--field); stroke: var(--q); }
+.p-r.pl { fill: var(--field); stroke: var(--r); }
+.plab { font: 700 10.5px var(--font-d); }
+.t-ol { fill: var(--ol-text); } .t-y { fill: var(--y-text); } .t-x { fill: var(--x); } .t-h { fill: var(--h); } .t-z { fill: var(--z); } .t-q { fill: var(--q); } .t-r { fill: var(--r); }
+.mering { fill: none; stroke: var(--me); stroke-width: 3; }
+.ring { fill: none; stroke-width: 1.8; }
+.ring-qb { stroke: var(--q); stroke-dasharray: 3.5 2.6; }
+.ring-rb { stroke: var(--r); stroke-dasharray: 3.5 2.6; }
+.ring-flag { stroke: var(--flag); stroke-width: 2.2; }
+.ringtag { font: 700 9.5px var(--font-d); letter-spacing: .04em; }
+.ringtag-qb { fill: var(--q); } .ringtag-rb { fill: var(--r); } .ringtag-flag { fill: var(--flag); font-size: 13px; }
+
+/* assignment list */
+.asg { list-style: none; margin: 10px 0 0; padding: 0 10px; display: grid; gap: 1px; }
+.asg li { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; padding: 5px 4px; border-radius: 6px; font-size: 13.5px; line-height: 1.35; }
+.asg li.isme { background: color-mix(in srgb, var(--gold) 22%, transparent); box-shadow: inset 3px 0 0 var(--gold); }
+.pos { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 20px; padding: 0 4px; border-radius: 5px; font: 700 12px/1 var(--font-d); letter-spacing: .03em; border: 1.5px solid currentColor; }
+.pos.p-ol { color: var(--ol); background: var(--ol-fill); border-color: var(--ol); }
+.pos.p-ol { color: var(--ol-text); }
+.pos.p-y { color: var(--y-text); background: var(--y-fill); border-color: var(--y-line); }
+.pos.p-h { color: var(--h); } .pos.p-x { color: var(--x); } .pos.p-z { color: var(--z); } .pos.p-q { color: var(--q); } .pos.p-r { color: var(--r); }
+.src { display: inline-block; margin-left: 6px; padding: 1px 5px; border-radius: 4px; font: 600 10.5px/1.4 var(--font-b); letter-spacing: .03em; vertical-align: 1px; white-space: nowrap; }
+.src-luke { background: color-mix(in srgb, var(--gold) 30%, transparent); color: var(--ink); }
+.src-inf { border: 1px dashed var(--muted); color: var(--muted); }
+.free { list-style: none; margin: 6px 10px 12px; padding: 8px 10px; border-top: 1px solid var(--rule); display: grid; gap: 5px; font-size: 13px; }
+.fr { display: grid; grid-template-columns: 12px 1fr; gap: 8px; align-items: start; color: var(--ink); }
+.fdot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; border: 2px dashed var(--muted); }
+.fr-qb .fdot { border-color: var(--q); }
+.fr-rb .fdot { border-color: var(--r); }
+.fr-flag .fdot { border: 2px solid var(--flag); }
+.fr-flag { font-weight: 600; }
+.fr-bs { color: var(--muted); }
+
+/* key */
+.key { margin: 34px 0 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.key section { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; }
+.key h2 { font-size: 20px; color: var(--maroon); margin-bottom: 8px; letter-spacing: .02em; }
+:root[data-theme="dark"] .key h2 { color: var(--gold); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .key h2 { color: var(--gold); } }
+.key p, .key li { font-size: 14px; max-width: 65ch; }
+.key ul, .key ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.key dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 14px; }
+.key dt { font: 700 16px/1.3 var(--font-d); letter-spacing: .03em; }
+.key dd { margin: 0; }
+.key code { font: 600 13px var(--font-b); background: var(--chip); padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+.key q { font-style: italic; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 420px) {
+  .me { margin-left: 0; }
+  .lbl { width: 100%; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="back" href="../">&larr; Back to the draw</a>
+    <p class="eyebrow">Warriors offensive playbook 2026, pages 12 to 14</p>
+    <h1>Run plays vs Under, Over and 5225</h1>
+    <p class="sub">Every play to each side against each front, linebackers at 90, 30 and 90. Blocks come from the playbook rules; Special comes from Luke's notes for the Buccs.</p>
+  </div>
+</header>
+<main class="wrap">
+  <section class="controls" aria-label="Choose what to show">
+    <div class="seg" role="tablist" id="play-tabs" aria-label="Play">
+      <button role="tab" data-play="oz" id="tab-oz">Outside zone<small>Houston / Texans</small></button>
+      <button role="tab" data-play="counter" id="tab-counter">Counter<small>Chicago / Bears</small></button>
+      <button role="tab" data-play="duo" id="tab-duo">Duo<small>Dallas / Cowboys</small></button>
+    </div>
+    <div class="row"><span class="lbl" id="lbl-front">Front</span>
+      <div class="chips" id="front-chips" role="group" aria-labelledby="lbl-front">
+        <button data-v="all" id="f-all">All 3</button><button data-v="under" id="f-under">Under</button><button data-v="over" id="f-over">Over</button><button data-v="5225" id="f-5225">5225</button>
+      </div>
+    </div>
+    <div class="row"><span class="lbl" id="lbl-side">Side</span>
+      <div class="chips" id="side-chips" role="group" aria-labelledby="lbl-side">
+        <button data-v="both" id="side-both">Both</button><button data-v="left" id="side-left">Left</button><button data-v="right" id="side-right">Right</button>
+      </div>
+    </div>
+    <div class="row toggles">
+      <button class="tog" id="t-special" aria-pressed="false">Special</button>
+      <button class="tog" id="t-mike" aria-pressed="false">Flip Mike</button>
+      <button class="tog" id="t-form" aria-pressed="false">ACE LT</button>
+      <label class="me" for="me">Me
+        <select id="me">
+          <option value="none">None</option><option value="LT">LT</option><option value="LG">LG</option><option value="C">C</option><option value="RG">RG</option><option value="RT">RT</option><option value="Y">Y</option>
+        </select>
+      </label>
+    </div>
+    <p class="mode-note" id="mode-note" hidden></p>
+  </section>
+
+  <section class="legend" aria-label="How to read the diagrams">
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><path d="M2 8 L24 8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M24 2.5 L24 13.5" stroke="currentColor" stroke-width="2"/></svg>Block</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><path d="M2 8 L24 8" stroke="currentColor" stroke-width="2" stroke-dasharray="4.5 3" fill="none"/><path d="M24 2.5 L24 13.5" stroke="currentColor" stroke-width="2"/></svg>Climb to a backer</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><path d="M2 3 L2 10 Q2 13 6 13 L24 13 Q28 13 28 9 L28 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>Pull</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--q)" stroke-width="1.8" stroke-dasharray="3.5 2.6"/></svg>QB's man</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--r)" stroke-width="1.8" stroke-dasharray="3.5 2.6"/></svg>RB reads him</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--flag)" stroke-width="2.2"/></svg>Nobody has him</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--me)" stroke-width="3"/></svg>Your spot</span>
+  </section>
+
+  <div id="cards" aria-live="polite"></div>
+
+  <div class="key">
+    <section aria-labelledby="k-fronts">
+      <h2 id="k-fronts">The fronts</h2>
+      <dl>
+        <dt>Under</dt><dd><code>5T 3T | 1T 5T</code> 3T away from the TE, 1T shading the C to the TE side. Mike's 30 sits in the bubble on the TE side.</dd>
+        <dt>Over</dt><dd><code>5T 1T | 3T 5T</code> 3T to the TE, 1T shading away. Mike's 30 sits in the bubble away from the TE.</dd>
+        <dt>5225</dt><dd><code>5T 2T | 2T 5T</code> Both guards covered head-up, 5Ts on both tackles. Mike's 30 on the TE side.</dd>
+        <dt>LBs</dt><dd>Will 90, Mike 30, Sam 90, all off the ball. <b>Flip Mike</b> puts the 30 on the other side.</dd>
+      </dl>
+    </section>
+    <section aria-labelledby="k-special">
+      <h2 id="k-special">Special</h2>
+      <ul>
+        <li>The TE takes the linebacker lined up over him (the 90). In Nub he helps on the 5.</li>
+        <li>Luke's "Dallas Special vs Over" sketch is Duo to the TE: PST takes the 5T, PSG has the 3T solo, C and BSG double the 1T up to the Mike. The backside tackle is uncovered: step B gap first, then look for work. The backside end is the QB's man on the boot.</li>
+        <li>Away from the TE I applied the same idea: the Y takes the backside 90, the end next to him is the QB's, and the RT steps B gap and climbs.</li>
+        <li>Outside zone only changes the Y (straight to the 90), so the Z's -1 moves to the SS.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="k-calls">
+      <h2 id="k-calls">Calls I made</h2>
+      <p>Lines tagged <span class="src src-inf">inferred</span> are where the playbook doesn't say. <span class="src src-luke">per Luke</span> comes from the WhatsApp thread.</p>
+      <ol>
+        <li>Duo vs 5225: a head-up 2T counts as being in your BS gap, so he's yours and the C combos the playside 2T.</li>
+        <li>Bears: the Y's wrap rule is for when he's backside. Playside he blocks gap-down-backer like a tackle, and X and Z swap their counter jobs.</li>
+        <li>Houston: there's no TE to aim at, so the RB aims at the LT's outside hip.</li>
+        <li>Counter with one inside backer: the wrapper owns the Mike unless a free gap-down-backer lineman gets there first.</li>
+        <li>Zone combos say "first one free climbs" because the rule is take over, knock over or climb.</li>
+      </ol>
+    </section>
+    <section aria-labelledby="k-ask">
+      <h2 id="k-ask">Worth asking Luke</h2>
+      <ul>
+        <li><b>Dallas vs Under (base):</b> the LT's BS gap holds the 3T, so by the rule nobody has the 5T outside him. Only the QB's keep fake holds him.</li>
+        <li><b>Cowboys (base) vs all three:</b> the Sam at 90 is free. That's the hole Special fills by sending the Y to him.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<script>
+/* Warriors run-play engine.
+   Coordinates are "strong-side": +x is the TE side, units are OL splits (C = 0).
+   y is yards from the LOS (+ = defense side). The renderer mirrors for ACE LT. */
+(function (root) {
+  'use strict';
+
+  var BX = { LT: -2, LG: -1, C: 0, RG: 1, RT: 2, Y: 3 };
+  var OL = ['LT', 'LG', 'C', 'RG', 'RT'];
+  var GAP_AT = { '-3.5': 'WD', '-2.5': 'WC', '-1.5': 'WB', '-0.5': 'WA', '0.5': 'SA', '1.5': 'SB', '2.5': 'SC', '3.5': 'SD' };
+  var GAP_X = { WD: -3.5, WC: -2.5, WB: -1.5, WA: -0.5, SA: 0.5, SB: 1.5, SC: 2.5, SD: 3.5 };
+  var GAP_NAME = { WD: 'D', WC: 'C', WB: 'B', WA: 'A', SA: 'A', SB: 'B', SC: 'C', SD: 'D' };
+
+  var OLY = -1.05, DLY = 1.55, LBY = 5.5, CBY = 7.0, SAFY = 10.0;
+  var OFF = {
+    LT: [-2, OLY], LG: [-1, OLY], C: [0, OLY], RG: [1, OLY], RT: [2, OLY], Y: [3, OLY],
+    X: [-6.15, OLY], H: [-4.25, -1.65], Z: [6.15, -1.65], QB: [0, -3.7], RB: [0, -6.2]
+  };
+
+  function gapAt(x) { return GAP_AT[String(Math.round(x * 10) / 10)]; }
+  function gapOf(b, side) { return gapAt(BX[b] + side * 0.5); }
+  function blockerAt(x) { for (var k in BX) if (BX[k] === x) return k; return null; }
+
+  var TECH_X = { 1: 0.5, 2: 1.0, 3: 1.45, 5: 2.45 };
+  var FRONTS = {
+    under: { key: 'under', name: 'Under', dl: [['W5', 5, -1], ['W3', 3, -1], ['S1', 1, 1], ['S5', 5, 1]], mike: 1,
+      line: '5T 3T | 1T 5T', blurb: '3T away from the TE, 1T shade to the TE' },
+    over: { key: 'over', name: 'Over', dl: [['W5', 5, -1], ['W1', 1, -1], ['S3', 3, 1], ['S5', 5, 1]], mike: -1,
+      line: '5T 1T | 3T 5T', blurb: '3T to the TE, 1T shade away' },
+    '5225': { key: '5225', name: '5225', dl: [['W5', 5, -1], ['W2', 2, -1], ['S2', 2, 1], ['S5', 5, 1]], mike: 1,
+      line: '5T 2T | 2T 5T', blurb: '2Ts head up on both guards' }
+  };
+
+  function buildDefense(frontKey, mikeFlip) {
+    var f = FRONTS[frontKey];
+    var dl = f.dl.map(function (r) {
+      var o = { id: r[0], kind: 'DL', tech: r[1], side: r[2], x: r[2] * TECH_X[r[1]], y: DLY, label: r[1] + 'T' };
+      if (r[1] === 1) o.gap = r[2] > 0 ? 'SA' : 'WA';
+      if (r[1] === 3) o.gap = r[2] > 0 ? 'SB' : 'WB';
+      if (r[1] === 5) o.gap = r[2] > 0 ? 'SC' : 'WC';
+      if (r[1] === 2) o.on = r[2] > 0 ? 'RG' : 'LG';
+      return o;
+    });
+    var m = mikeFlip ? -f.mike : f.mike;
+    var lb = [
+      { id: 'WILL', kind: 'LB', label: 'W', align: '90', x: -3.45, y: LBY, gap: 'WD', side: -1 },
+      { id: 'MIKE', kind: 'LB', label: 'M', align: '30', x: m * 1.5, y: LBY, gap: m > 0 ? 'SB' : 'WB', side: m },
+      { id: 'SAM', kind: 'LB', label: 'S', align: '90', x: 3.45, y: LBY, gap: 'SD', side: 1 }
+    ];
+    var db = [
+      { id: 'CBW', kind: 'DB', label: 'C', x: -6.15, y: CBY, side: -1 },
+      { id: 'FS', kind: 'DB', label: 'FS', x: -2.6, y: SAFY, side: -1 },
+      { id: 'SS', kind: 'DB', label: 'SS', x: 2.6, y: SAFY, side: 1 },
+      { id: 'CBS', kind: 'DB', label: 'C', x: 6.15, y: CBY, side: 1 }
+    ];
+    var all = dl.concat(lb, db);
+    var byId = {};
+    all.forEach(function (o) { byId[o.id] = o; });
+    return { dl: dl, lb: lb, db: db, all: all, byId: byId, mikeSide: m, front: f };
+  }
+
+  function name(D, id) {
+    if (!id) return '';
+    var o = D.byId[id];
+    if (!o) return id;
+    if (o.kind === 'DL') return o.label;
+    if (id === 'MIKE') return 'Mike (30)';
+    if (id === 'SAM') return 'Sam (90)';
+    if (id === 'WILL') return 'Will (90)';
+    if (id === 'CBW' || id === 'CBS') return 'the CB';
+    return o.label;
+  }
+
+  /* ---------------- DUO (Dallas / Cowboys) ----------------
+     Playbook: "BS gap = down, if none, PS gap = combo to BS 2nd level defender".
+     Y: "BS gap (solo = down, w/ OT = combo), if none PS gap = drive".
+     A head-up 2T counts as being in the BS gap of the man he's on (he's "yours"). */
+  function duo(D, d, special) {
+    var A = {};
+    function eff(dl) { return dl.on ? gapOf(dl.on, -d) : dl.gap; }
+    function dlEff(g) { return D.dl.filter(function (x) { return eff(x) === g; })[0] || null; }
+
+    OL.forEach(function (b) {
+      var bs = gapOf(b, -d), ps = gapOf(b, d);
+      var dB = dlEff(bs);
+      if (dB) { A[b] = { type: 'down', t: dB.id, headUp: dB.on === b, src: dB.on ? 'inf' : 'pb' }; return; }
+      var dP = dlEff(ps);
+      A[b] = dP ? { type: 'combo', t: dP.id, bs: bs, src: dP.on ? 'inf' : 'pb' } : { type: 'climb', bs: bs, src: 'pb' };
+    });
+    (function () {
+      var bsY = gapOf('Y', -d), psY = gapOf('Y', d);
+      var dB = dlEff(bsY);
+      if (dB) A.Y = { type: 'down', t: dB.id, withOT: A.RT.type === 'combo' && A.RT.t === dB.id, src: 'pb' };
+      else {
+        var dP = dlEff(psY);
+        A.Y = dP ? { type: 'drive', t: dP.id, src: 'pb' } : { type: 'climb', src: 'pb' };
+      }
+    })();
+    OL.forEach(function (b) {
+      var a = A[b];
+      if (a.type !== 'combo') return;
+      var partner = OL.concat('Y').filter(function (p) {
+        return p !== b && A[p].t === a.t && (A[p].type === 'down' || A[p].type === 'drive');
+      })[0];
+      if (!partner) { A[b] = { type: 'drive', t: a.t, noPartner: true, src: 'pb' }; return; }
+      a.partner = partner;
+      var lb = D.lb.filter(function (l) { return l.gap === a.bs; })[0];
+      a.climb = lb ? lb.id : null;
+    });
+
+    var qbMan = null;
+    if (special) {
+      var bst = d > 0 ? 'LT' : 'RT', pst = d > 0 ? 'RT' : 'LT';
+      A.Y = { type: 'lb', t: 'SAM', special: true, src: 'luke' };
+      var pEnd = D.dl.filter(function (x) { return x.gap === gapOf(pst, d); })[0];
+      if (pEnd) {
+        var cur = A[pst];
+        if (cur.t !== pEnd.id) {
+          A[pst] = { type: 'drive', t: pEnd.id, special: 'slide', src: d > 0 ? 'luke' : 'inf' };
+          OL.forEach(function (b) {
+            if (b !== pst && A[b].type === 'combo' && A[b].partner === pst) {
+              A[b] = { type: 'drive', t: A[b].t, special: 'solo', src: d > 0 ? 'luke' : 'inf' };
+            }
+          });
+        } else if (cur.type === 'combo') {
+          A[pst] = { type: 'drive', t: pEnd.id, special: 'lostY', src: 'luke' };
+        }
+      }
+      var bEnd = D.dl.filter(function (x) { return x.gap === gapOf(bst, -d); })[0];
+      qbMan = bEnd ? bEnd.id : null;
+      var claimed = {};
+      Object.keys(A).forEach(function (k) { if (A[k].climb) claimed[A[k].climb] = 1; });
+      var stepGap = gapOf(bst, d);
+      var lb2 = D.lb.filter(function (l) { return l.gap === stepGap && !claimed[l.id]; })[0];
+      A[bst] = { type: 'stepwork', gap: stepGap, climb: lb2 ? lb2.id : null, special: true, src: d > 0 ? 'luke' : 'inf' };
+    }
+    A.H = { type: 'lev', t: 'WILL', src: 'pb' };
+    A.X = { type: 'stalk', t: 'FS', src: 'pb' };
+    A.Z = { type: 'stalk', t: 'SS', src: 'pb' };
+    A.QB = { type: special ? 'boot' : 'keepfake', src: special ? (d > 0 ? 'luke' : 'inf') : 'pb' };
+    A.RB = { type: 'duo', src: 'pb' };
+    return { A: A, qbMan: qbMan };
+  }
+
+  /* ---------------- OUTSIDE ZONE (Houston / Texans) ----------------
+     OL: "PS bucket step then take over, knock over or climb".
+     Y: "PS gap covered = reach, uncovered = combo / climb".  QB boots away. */
+  function oz(D, d, special) {
+    var order = d > 0 ? ['Y', 'RT', 'RG', 'C', 'LG', 'LT'] : ['LT', 'LG', 'C', 'RG', 'RT', 'Y'];
+    var A = {};
+    if (special) A.Y = { type: 'lb', t: 'SAM', special: true, src: 'luke' };
+    function dl(id) { return D.byId[id]; }
+    var cov = {};
+    order.forEach(function (b) {
+      if (A[b]) return;
+      var on = D.dl.filter(function (x) { return x.on === b; })[0];
+      var inPS = D.dl.filter(function (x) { return x.gap === gapOf(b, d); })[0];
+      if (on || inPS) cov[b] = (on || inPS).id;
+    });
+    var helperOf = {}, helping = {};
+    order.forEach(function (b, i) {
+      if (!cov[b]) return;
+      var t = cov[b], pl = order[i - 1], bk = order[i + 1];
+      function free(p) { return p && !cov[p] && !helping[p] && !A[p]; }
+      if (free(pl) && dl(t).gap === gapOf(pl, -d)) { helperOf[b] = pl; helping[pl] = t; return; }
+      if (free(bk)) { helperOf[b] = bk; helping[bk] = t; }
+    });
+    order.forEach(function (b) {
+      if (A[b]) return;
+      var backside = BX[b] * d < 0;
+      if (cov[b]) A[b] = { type: 'reach', t: cov[b], helper: helperOf[b] || null, cutoff: backside, src: 'pb' };
+      else if (helping[b]) {
+        var partner = Object.keys(helperOf).filter(function (k) { return helperOf[k] === b; })[0];
+        A[b] = { type: 'help', t: helping[b], partner: partner, cutoff: backside, src: 'pb' };
+      } else A[b] = { type: 'climb', cutoff: backside, src: 'pb' };
+    });
+    A.X = { type: 'lev', t: 'FS', src: 'pb' };
+    A.H = { type: 'lev', t: 'WILL', src: 'pb' };
+    A.Z = { type: 'lev', t: special ? 'SS' : 'SAM', src: special ? 'inf' : 'pb' };
+
+    var claimed = { WILL: 1, SAM: 1 };
+    var climbers = [];
+    order.forEach(function (b) {
+      var a = A[b];
+      if (a.type === 'help') climbers.push({ b: b, ox: BX[b], dlx: dl(a.t).x });
+      if (a.type === 'climb') climbers.push({ b: b, ox: BX[b], dlx: BX[b] });
+    });
+    var lbs = D.lb.filter(function (l) { return !claimed[l.id]; });
+    var pairs = [];
+    climbers.forEach(function (c) {
+      lbs.forEach(function (l) {
+        var dist = Math.abs(c.ox - l.x);
+        if (dist <= 2.01) pairs.push({ c: c, l: l, s1: Math.round(dist * 10), s2: Math.abs(c.dlx - l.x) });
+      });
+    });
+    pairs.sort(function (p, q) { return p.s1 - q.s1 || p.s2 - q.s2; });
+    var usedC = {}, usedL = {};
+    pairs.forEach(function (p) {
+      if (usedC[p.c.b] || usedL[p.l.id]) return;
+      usedC[p.c.b] = 1; usedL[p.l.id] = 1;
+      A[p.c.b].climb = p.l.id;
+    });
+    A.QB = { type: 'ozboot', src: 'pb' };
+    A.RB = { type: 'oz', src: d > 0 ? 'pb' : 'inf' };
+    var bEnd = D.dl.filter(function (x) { return x.side === -d && x.tech === 5; })[0];
+    var hit = {};
+    Object.keys(A).forEach(function (k) { if (A[k].t) hit[A[k].t] = 1; });
+    var qbMan = bEnd && !hit[bEnd.id] ? bEnd.id : null;
+    return { A: A, qbMan: qbMan };
+  }
+
+  /* ---------------- COUNTER (Chicago / Bears) ----------------
+     BSG: flat pull, kick out EMLOS.  BST: no TE = pull & wrap 1st colour inside; with TE = hinge.
+     C, PSG, PST: gap - down - backer.  Y attached (backside) = pull & wrap. */
+  function counter(D, d) {
+    var pst = d > 0 ? 'RT' : 'LT', psg = d > 0 ? 'RG' : 'LG', bsg = d > 0 ? 'LG' : 'RG', bst = d > 0 ? 'LT' : 'RT';
+    var teP = d > 0;
+    var gdb = teP ? ['Y', pst, psg, 'C'] : [pst, psg, 'C'];
+    var A = {};
+    gdb.forEach(function (b) {
+      var ig = gapOf(b, -d);
+      var G = D.dl.filter(function (x) { return x.gap === ig; })[0];
+      var src = b === 'Y' ? 'inf' : 'pb';
+      if (G) { A[b] = { type: 'gap', t: G.id, src: src }; return; }
+      var N = blockerAt(BX[b] - d);
+      var Dn = D.dl.filter(function (x) { return x.on === N; })[0] || D.dl.filter(function (x) { return x.gap === gapOf(N, -d); })[0];
+      if (Dn) { A[b] = { type: 'downblk', t: Dn.id, on: N, src: src }; return; }
+      A[b] = { type: 'backer', t: null, src: src };
+    });
+    var blocked = {};
+    gdb.forEach(function (b) { if (A[b].t) blocked[A[b].t] = 1; });
+    var psDL = D.dl.filter(function (x) { return x.side === d; }).sort(function (p, q) { return (q.x - p.x) * d; });
+    var em = psDL.filter(function (x) { return !blocked[x.id]; })[0];
+    var emlos = em ? em.id : (d > 0 ? 'SAM' : 'WILL');
+    A[bsg] = { type: 'kick', t: emlos, src: 'pb' };
+    var wrapper;
+    if (teP) { A[bst] = { type: 'wrap', t: null, src: 'pb' }; wrapper = bst; }
+    else {
+      var h = D.dl.filter(function (x) { return x.gap === gapOf(bst, -d); })[0];
+      A[bst] = { type: 'hinge', t: h ? h.id : null, src: 'pb' };
+      A.Y = { type: 'wrap', t: null, src: 'pb' };
+      wrapper = 'Y';
+    }
+    var backers = gdb.filter(function (b) { return A[b].type === 'backer'; });
+    var mike = D.byId.MIKE, mikeTaken = false;
+    if (backers.length) {
+      backers.sort(function (p, q) { return Math.abs(BX[p] - mike.x) - Math.abs(BX[q] - mike.x); });
+      A[backers[0]].t = 'MIKE';
+      mikeTaken = true;
+    }
+    A[wrapper].t = mikeTaken ? null : 'MIKE';
+    A[wrapper].wrapper = true;
+    if (d < 0) {
+      A.X = { type: 'lev', t: 'FS', rule: 'ps', src: 'pb' };
+      A.Z = { type: 'stalk', t: 'CBS', src: 'pb' };
+    } else {
+      A.Z = { type: 'lev', t: 'SS', rule: 'ps', src: 'inf' };
+      A.X = { type: 'stalk', t: 'CBW', src: 'inf' };
+    }
+    A.H = { type: 'lev', t: 'WILL', src: 'pb' };
+    A.QB = { type: 'reverse', src: 'pb' };
+    A.RB = { type: 'counter', wrapper: wrapper, src: 'pb' };
+    return { A: A, qbMan: null, wrapper: wrapper, bsg: bsg, emlos: emlos };
+  }
+
+  /* ---------------- text ---------------- */
+  var ROWS = ['LT', 'LG', 'C', 'RG', 'RT', 'Y', 'H', 'X', 'Z', 'QB', 'RB'];
+
+  function doubles(A) {
+    var m = {};
+    Object.keys(A).forEach(function (k) {
+      var a = A[k];
+      if (!a.t || ['lev', 'stalk', 'kick', 'wrap', 'lb', 'hinge'].indexOf(a.type) >= 0) return;
+      (m[a.t] = m[a.t] || []).push(k);
+    });
+    return m;
+  }
+
+  function textDuo(R) {
+    var A = R.A, D = R.D, d = R.d, T = {};
+    function n(id) { return name(D, id); }
+    OL.concat('Y').forEach(function (b) {
+      var a = A[b], s = '';
+      if (a.type === 'down') {
+        if (b === 'Y') s = a.withOT ? 'BS gap: down on the 5T, RT combos off him' : 'BS gap: down on the 5T, solo (RT has his own)';
+        else s = a.headUp ? 'Head-up ' + n(a.t) + ' counts as your BS gap: drive him' : 'BS gap: down on the ' + n(a.t);
+      } else if (a.type === 'combo') {
+        s = 'BS gap empty: combo the ' + n(a.t) + ' with ' + a.partner + ', ' + (a.climb ? 'climb to the ' + n(a.climb) : 'no backer in your BS gap, stay on him');
+      } else if (a.type === 'drive') {
+        if (a.special === 'slide') s = d > 0 ? 'Special: TE is up, so the ' + n(a.t) + ' outside you is yours' : 'Special: the ' + n(a.t) + ' outside you is yours (no TE this side to take him)';
+        else if (a.special === 'solo') s = 'Special: ' + n(a.t) + ' solo, your combo partner slid out to the 5T';
+        else if (a.special === 'lostY') s = 'Special: ' + n(a.t) + ' solo, no TE help';
+        else if (a.noPartner) s = 'BS gap empty: ' + n(a.t) + ' in your PS gap, no one to combo with, drive him';
+        else s = 'BS gap empty: drive the ' + n(a.t) + ' with the RT';
+      } else if (a.type === 'climb') s = 'Both gaps empty: climb';
+      else if (a.type === 'lb') s = 'Special: take the Sam (90) lined up over you';
+      else if (a.type === 'stepwork') s = 'Special: the end is the QB\'s. Step B gap first, then ' + (a.climb ? 'climb to the ' + n(a.climb) : 'look for work downfield');
+      T[b] = s;
+    });
+    T.H = 'Leverage block the Will (90)';
+    T.X = 'Stalk the FS';
+    T.Z = 'Stalk the SS';
+    T.QB = R.special ? 'Midline give, then boot away: the backside end is yours' : 'Open to 90, give midline, fake the keep';
+    T.RB = 'Pistol, aim PS A gap, read the Mike: bounce if he fills';
+    return T;
+  }
+
+  function textOZ(R) {
+    var A = R.A, D = R.D, d = R.d, T = {};
+    function n(id) { return name(D, id); }
+    OL.concat('Y').forEach(function (b) {
+      var a = A[b], s = '';
+      if (a.type === 'lb') s = 'Special: take the Sam (90) lined up over you';
+      else if (a.type === 'reach') {
+        var verb = a.cutoff ? 'cut off' : 'reach';
+        if (b === 'Y') s = 'PS gap covered: ' + verb + ' the ' + n(a.t);
+        else s = 'Covered: ' + verb + ' the ' + n(a.t) + (a.helper ? ', ' + a.helper + ' helps (knock over / take over)' : ', no help');
+      } else if (a.type === 'help') {
+        var climb = a.climb ? ', first one free climbs to the ' + n(a.climb) : ', then up to the 2nd level';
+        if (b === 'Y') s = 'PS gap uncovered: combo the ' + n(a.t) + ' with ' + a.partner + climb;
+        else s = 'Uncovered: combo the ' + n(a.t) + ' with ' + a.partner + climb;
+      } else if (a.type === 'climb') s = 'Uncovered: ' + (a.climb ? 'climb to the ' + n(a.climb) : 'climb to the 2nd level');
+      T[b] = s;
+    });
+    T.H = '-1 block: the Will (90)';
+    T.X = '-1 block: the FS';
+    T.Z = R.special ? '-1 block: the SS (Y has the Sam)' : '-1 block: the Sam (90)';
+    T.QB = '45 degree track to the mesh, then boot away';
+    T.RB = d > 0 ? 'Zone steps, aim the butt of the TE: bend, bang, bounce' : 'Zone steps, no TE this side so aim the LT\'s outside hip: bend, bang, bounce';
+    return T;
+  }
+
+  function textCounter(R) {
+    var A = R.A, D = R.D, d = R.d, T = {};
+    function n(id) { return name(D, id); }
+    var dbl = doubles(A);
+    OL.concat('Y').forEach(function (b) {
+      var a = A[b], s = '';
+      if (!a) return;
+      var partner = a.t && dbl[a.t] ? dbl[a.t].filter(function (k) { return k !== b; })[0] : null;
+      var w = partner ? ' (double with ' + partner + ')' : '';
+      if (a.type === 'gap') s = (b === 'Y' ? 'Playside: gap-down-backer. Gap: down on the ' : 'Gap: down on the ') + n(a.t) + w;
+      else if (a.type === 'downblk') {
+        if (b === 'C') s = 'No gap DL: block back on the ' + n(a.t) + ' for the pulling ' + R.bsg + w;
+        else s = 'No gap DL: down on the ' + n(a.t) + ' (on the ' + a.on + ')' + w;
+      } else if (a.type === 'backer') s = 'No gap or down: backer, ' + (a.t ? 'climb to the ' + n(a.t) : 'look for work');
+      else if (a.type === 'kick') s = 'Flat pull, kick out the EMLOS: ' + n(a.t) + (a.t === 'SAM' ? ' as he fills' : '');
+      else if (a.type === 'wrap') s = (b === 'Y' ? 'Attached: pull & wrap, ' : 'No TE behind you: pull & wrap, ') + '1st colour inside: ' + (a.t ? n(a.t) : 'Mike is taken, fit the next one');
+      else if (a.type === 'hinge') s = 'TE is pulling: hinge, protect B gap then the 5T';
+      T[b] = s;
+    });
+    T.H = 'Leverage block the Will (90)';
+    if (d < 0) { T.X = 'PS safety: the FS (leverage)'; T.Z = 'Stalk the CB'; }
+    else { T.Z = 'PS safety: the SS (X/Z roles swap)'; T.X = 'Stalk the CB (X/Z roles swap)'; }
+    T.QB = '1-step reverse out, show hand, hand off with the opposite';
+    T.RB = '3 counter steps, hard cut over Q, eyes on the 2nd puller (' + R.wrapper + ')';
+    return T;
+  }
+
+  /* free defenders in the box */
+  function freeList(R) {
+    var A = R.A, D = R.D, d = R.d, out = [];
+    var hit = {};
+    Object.keys(A).forEach(function (k) { if (A[k].t) hit[A[k].t] = 1; if (A[k].climb) hit[A[k].climb] = 1; });
+    D.dl.concat(D.lb).forEach(function (o) {
+      if (hit[o.id]) return;
+      var nm = name(D, o.id);
+      var backside = o.side === -d;
+      if (o.id === R.qbMan) { out.push({ id: o.id, tag: 'qb', text: nm + ': the QB\'s man on the boot' }); return; }
+      if (R.play === 'duo' && o.id === 'MIKE') { out.push({ id: o.id, tag: 'rb', text: 'Mike (30): the RB reads him for the bounce' }); return; }
+      if (R.play === 'duo' && !R.special && o.id === 'SAM' && d > 0) {
+        out.push({ id: o.id, tag: 'flag', text: 'Sam (90): free in base. Only the QB keep fake holds him, which is why Special sends the Y to him' });
+        return;
+      }
+      if (R.play === 'duo' && !R.special && o.kind === 'DL' && o.side === d) {
+        out.push({ id: o.id, tag: 'flag', text: nm + ': nobody has him by the letter of the rule (LT\'s BS gap holds the 3T). Only the QB keep fake holds him. Ask Luke' });
+        return;
+      }
+      if (backside) { out.push({ id: o.id, tag: 'bs', text: nm + ': backside, unblocked' }); return; }
+      out.push({ id: o.id, tag: 'bs', text: nm + ': unblocked' });
+    });
+    return out;
+  }
+
+  /* ---------------- drawing primitives (strong coords) ---------------- */
+  function prims(R) {
+    var A = R.A, D = R.D, d = R.d, P = [];
+    function def(id) { var o = D.byId[id]; return [o.x, o.y]; }
+    function add(p) { P.push(p); }
+    function climbLine(pos, fromDL, lbId) {
+      var o = D.byId[fromDL];
+      add({ pos: pos, pts: [[o.x, o.y + 0.6], def(lbId)], end: 'T', dash: true, trimE: 'def' });
+    }
+    Object.keys(A).forEach(function (pos) {
+      var a = A[pos];
+      var s = OFF[pos];
+      if (!s || pos === 'QB' || pos === 'RB') return;
+      var t = a.t ? D.byId[a.t] : null;
+      switch (a.type) {
+        case 'down': case 'drive': case 'gap': case 'downblk': case 'combo':
+          add({ pos: pos, pts: [s, [t.x, t.y]], end: 'T', trimS: 'off', trimE: 'def' });
+          if (a.type === 'combo' && a.climb) climbLine(pos, a.t, a.climb);
+          break;
+        case 'reach':
+          add({ pos: pos, pts: [s, [t.x + d * 0.3, t.y - 0.55]], end: 'T', trimS: 'off' });
+          break;
+        case 'help':
+          if (BX[pos] * d > BX[a.partner] * d) add({ pos: pos, pts: [s, [t.x + d * 0.46, t.y - 0.2]], end: 'T', trimS: 'off' });
+          else add({ pos: pos, pts: [s, [t.x - d * 0.32, t.y - 0.55]], end: 'T', trimS: 'off' });
+          if (a.climb) climbLine(pos, a.t, a.climb);
+          break;
+        case 'climb':
+          if (a.climb) add({ pos: pos, pts: [s, def(a.climb)], end: 'T', dash: true, trimS: 'off', trimE: 'def' });
+          else add({ pos: pos, pts: [s, [s[0] + d * 0.3, 3.9]], end: 'arrow', dash: true, trimS: 'off' });
+          break;
+        case 'lb': case 'lev':
+          add({ pos: pos, pts: [s, [t.x, t.y]], end: 'T', trimS: 'off', trimE: 'def' });
+          break;
+        case 'stalk':
+          if (t.kind === 'DB' && (a.t === 'CBW' || a.t === 'CBS')) add({ pos: pos, pts: [s, [t.x, t.y - 1.15]], end: 'T', trimS: 'off' });
+          else add({ pos: pos, pts: [s, [t.x, t.y]], end: 'T', trimS: 'off', trimE: 'def' });
+          break;
+        case 'backer':
+          if (a.t) add({ pos: pos, pts: [s, def(a.t)], end: 'T', dash: true, trimS: 'off', trimE: 'def' });
+          else add({ pos: pos, pts: [s, [s[0], 3.7]], end: 'arrow', dash: true, trimS: 'off' });
+          break;
+        case 'stepwork':
+          var gx = GAP_X[a.gap];
+          add({ pos: pos, pts: [s, [gx, 0.25]], end: null, trimS: 'off' });
+          if (a.climb) add({ pos: pos, pts: [[gx, 0.25], def(a.climb)], end: 'T', dash: true, trimE: 'def' });
+          else add({ pos: pos, pts: [[gx, 0.25], [gx + (gx > 0 ? 0.4 : -0.4), 4.4]], end: 'arrow', dash: true });
+          break;
+        case 'kick':
+          add({ pos: pos, curve: true, pts: [s, [s[0] + d * 0.25, -2.1], [t.x - d * 0.85, -2.1], [t.x - d * 0.34, t.y - (t.kind === 'LB' ? 0.85 : 0.55)]], end: 'T', trimS: 'off' });
+          break;
+        case 'wrap':
+          var hole = d < 0 ? -2.2 : 3.2;
+          var pts = [s, [s[0] + d * 0.2, -2.8], [hole - d * 0.55, -2.8], [hole, -0.1], [hole - d * 0.05, 2.3]];
+          if (t) { pts.push([t.x, t.y]); add({ pos: pos, curve: true, pts: pts, end: 'T', trimS: 'off', trimE: 'def' }); }
+          else { pts.push([hole - d * 0.4, 4.3]); add({ pos: pos, curve: true, pts: pts, end: 'arrow', trimS: 'off' }); }
+          break;
+        case 'hinge':
+          add({ pos: pos, pts: [s, [s[0] + d * 0.42, s[1] - 0.62]], end: 'T', trimS: 'off' });
+          break;
+      }
+    });
+    // QB
+    var q = OFF.QB, qa = A.QB;
+    if (qa.type === 'keepfake') add({ pos: 'QB', pts: [q, [d * 2.7, -3.95]], end: 'dot', dash: true, trimS: 'off' });
+    if (qa.type === 'boot') add({ pos: 'QB', curve: true, pts: [q, [d * 0.4, -4.3], [-d * 0.9, -4.55], [-d * 2.9, -4.1]], end: 'dot', dash: true, trimS: 'off' });
+    if (qa.type === 'ozboot') add({ pos: 'QB', curve: true, pts: [q, [d * 0.95, -4.25], [d * 1.05, -5.3], [-d * 0.2, -5.6], [-d * 1.95, -5.2]], end: 'dot', trimS: 'off' });
+    if (qa.type === 'reverse') add({ pos: 'QB', curve: true, pts: [q, [-d * 0.85, -3.75], [-d * 0.2, -4.5], [d * 0.6, -4.8]], end: 'dot', trimS: 'off' });
+    // RB
+    var r = OFF.RB;
+    if (A.RB.type === 'duo') {
+      add({ pos: 'RB', pts: [r, [d * 0.5, 0.1], [d * 0.5, 3.5]], end: 'arrow', trimS: 'off' });
+      add({ pos: 'RB', pts: [[d * 0.5, -0.3], [d * 1.8, 3.1]], end: 'arrow', dash: true });
+    }
+    if (A.RB.type === 'oz') {
+      // aim: butt of the TE (to the TE) or the LT's outside hip (away), then bend / bang / bounce
+      var aim = d > 0 ? [2.75, -2.0] : [-2.35, -2.0];
+      var opt = d > 0
+        ? { bounce: [[3.75, -0.5], [4.35, 2.9]], bang: [[2.5, 0.25], [2.5, 3.0]], bend: [[1.5, 0.25], [0.95, 2.7]] }
+        : { bounce: [[-3.3, -0.5], [-3.9, 2.9]], bang: [[-2.5, 0.25], [-2.55, 3.0]], bend: [[-1.5, 0.25], [-0.95, 2.7]] };
+      add({ pos: 'RB', curve: true, pts: [r, [aim[0] * 0.45, -4.7], aim], end: 'arrow', trimS: 'off' });
+      ['bounce', 'bang', 'bend'].forEach(function (k) {
+        add({ pos: 'RB', curve: true, pts: [aim].concat(opt[k]), end: 'arrow', dash: true });
+      });
+    }
+    if (A.RB.type === 'counter') {
+      var holeX = d < 0 ? -2.2 : 3.2;
+      add({ pos: 'RB', curve: true, pts: [r, [-d * 0.75, -5.65], [d * 0.1, -4.35], [holeX * 0.75, -1.9], [holeX - d * 0.12, 1.2], [holeX - d * 0.3, 3.5]], end: 'arrow', trimS: 'off' });
+    }
+    return P;
+  }
+
+  function callName(play, screenRight) {
+    var names = { oz: ['Houston', 'Texans'], counter: ['Chicago', 'Bears'], duo: ['Dallas', 'Cowboys'] };
+    return names[play][screenRight ? 1 : 0];
+  }
+
+  var PLAYS = {
+    oz: { key: 'oz', name: 'Outside Zone', short: 'Outside zone', page: 12 },
+    counter: { key: 'counter', name: 'Counter', short: 'Counter', page: 13 },
+    duo: { key: 'duo', name: 'Duo', short: 'Duo', page: 14 }
+  };
+
+  /* opts: { play, side: 'left'|'right' (screen), front, special, mikeFlip, formation: 'RT'|'LT' } */
+  function resolve(opts) {
+    var flip = opts.formation === 'LT' ? -1 : 1;
+    var screenRight = opts.side === 'right';
+    var d = (screenRight ? 1 : -1) * flip;   // +1 = toward the TE
+    var D = buildDefense(opts.front, opts.mikeFlip);
+    var special = !!opts.special && opts.play !== 'counter';
+    var core = opts.play === 'duo' ? duo(D, d, special) : opts.play === 'oz' ? oz(D, d, special) : counter(D, d);
+    var R = { play: opts.play, d: d, D: D, special: special, A: core.A, qbMan: core.qbMan, wrapper: core.wrapper, bsg: core.bsg,
+      flip: flip, formation: opts.formation, front: FRONTS[opts.front], call: callName(opts.play, screenRight), screenRight: screenRight };
+    R.text = opts.play === 'duo' ? textDuo(R) : opts.play === 'oz' ? textOZ(R) : textCounter(R);
+    R.free = freeList(R);
+    R.prims = prims(R);
+    R.toTE = d > 0;
+    return R;
+  }
+
+  var api = { resolve: resolve, FRONTS: FRONTS, PLAYS: PLAYS, OFF: OFF, ROWS: ROWS, name: name, callName: callName, LBY: LBY };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.RunEngine = api;
+})(this);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var E = window.RunEngine;
+
+  /* ---------- SVG geometry ---------- */
+  var W = 388, CX = 194, UX = 27.5, UY = 15, TOP = 14, MAXY = 10.55, MINY = -7.0;
+  var LOSY = TOP + MAXY * UY;
+  var H = Math.round(LOSY - MINY * UY + 9);
+  var DEF_R = 12, OFF_R = 12.5;
+  var COLOR = { LT: 'ol', LG: 'ol', C: 'ol', RG: 'ol', RT: 'ol', Y: 'y', H: 'h', X: 'x', Z: 'z', QB: 'q', RB: 'r' };
+  var OLSET = { LT: 1, LG: 1, C: 1, RG: 1, RT: 1 };
+
+  function f1(n) { return (Math.round(n * 10) / 10).toString(); }
+  function pt(p) { return f1(p[0]) + ' ' + f1(p[1]); }
+  function dist(a, b) { return Math.hypot(b[0] - a[0], b[1] - a[1]); }
+  function toward(a, b, r) { var L = dist(a, b) || 1; return [a[0] + (b[0] - a[0]) * r / L, a[1] + (b[1] - a[1]) * r / L]; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  function pathD(pts, curve) {
+    if (!curve || pts.length < 3) return 'M' + pts.map(pt).join(' L');
+    var d = 'M' + pt(pts[0]);
+    for (var i = 1; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+      var r = Math.min(16, dist(p0, p1) / 2, dist(p1, p2) / 2);
+      d += ' L' + pt(toward(p1, p0, r)) + ' Q' + pt(p1) + ' ' + pt(toward(p1, p2, r));
+    }
+    return d + ' L' + pt(pts[pts.length - 1]);
+  }
+
+  function endDeco(pts, kind, cls) {
+    if (!kind) return '';
+    var e = pts[pts.length - 1], p = pts[pts.length - 2];
+    var L = dist(p, e) || 1, ux = (e[0] - p[0]) / L, uy = (e[1] - p[1]) / L, px = -uy, py = ux;
+    if (kind === 'T') return '<path class="' + cls + '" d="M' + pt([e[0] + px * 5.8, e[1] + py * 5.8]) + ' L' + pt([e[0] - px * 5.8, e[1] - py * 5.8]) + '"/>';
+    if (kind === 'arrow') {
+      var b = [e[0] - ux * 7.5, e[1] - uy * 7.5];
+      return '<path class="' + cls + ' head" d="M' + pt(e) + ' L' + pt([b[0] + px * 4, b[1] + py * 4]) + ' L' + pt([b[0] - px * 4, b[1] - py * 4]) + 'Z"/>';
+    }
+    if (kind === 'dot') return '<circle class="' + cls + ' dot" cx="' + f1(e[0]) + '" cy="' + f1(e[1]) + '" r="3.4"/>';
+    return '';
+  }
+
+  function svgFor(R, me) {
+    var f = R.flip;
+    function X(x) { return CX + f * x * UX; }
+    function Y(y) { return LOSY - y * UY; }
+    function S(p) { return [X(p[0]), Y(p[1])]; }
+    var o = [];
+    var label = 'ACE ' + R.formation + ' ' + R.call + ' versus ' + R.front.name + (R.special ? ', Special' : '');
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(label) + '">');
+    o.push('<rect class="fld" x="0" y="0" width="' + W + '" height="' + H + '" rx="6"/>');
+    [10, 5, -5].forEach(function (yd) { o.push('<line class="yl" x1="0" x2="' + W + '" y1="' + f1(Y(yd)) + '" y2="' + f1(Y(yd)) + '"/>'); });
+    o.push('<line class="los" x1="0" x2="' + W + '" y1="' + f1(Y(0)) + '" y2="' + f1(Y(0)) + '"/>');
+    var ticks = '';
+    for (var yd = -6; yd <= 9; yd++) {
+      [-5.05, 5.05].forEach(function (hx) {
+        var x = CX + hx * UX;
+        ticks += 'M' + f1(x - 3.5) + ' ' + f1(Y(yd)) + ' L' + f1(x + 3.5) + ' ' + f1(Y(yd)) + ' ';
+      });
+    }
+    o.push('<path class="hash" d="' + ticks + '"/>');
+
+    // rings for unblocked defenders
+    R.free.forEach(function (fr) {
+      if (fr.tag === 'bs') return;
+      var dd = R.D.byId[fr.id], c = S([dd.x, dd.y]);
+      o.push('<circle class="ring ring-' + fr.tag + '" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="17"/>');
+      var tag = fr.tag === 'qb' ? 'QB' : fr.tag === 'rb' ? 'READ' : '!';
+      var tx = c[0] + (dd.x * f >= 0 ? 19 : -19);
+      o.push('<text class="ringtag ringtag-' + fr.tag + '" x="' + f1(tx) + '" y="' + f1(c[1] - 13) + '" text-anchor="' + (dd.x * f >= 0 ? 'start' : 'end') + '">' + tag + '</text>');
+    });
+
+    // assignment lines (QB/RB last so they sit on top of blocks)
+    var prims = R.prims.slice().sort(function (a, b) { return (a.pos === 'RB' || a.pos === 'QB' ? 1 : 0) - (b.pos === 'RB' || b.pos === 'QB' ? 1 : 0); });
+    prims.forEach(function (p) {
+      var pts = p.pts.map(S);
+      if (p.trimS === 'off') pts[0] = toward(pts[0], pts[1], OFF_R + 1.5);
+      if (p.trimE === 'def') { var n = pts.length; pts[n - 1] = toward(pts[n - 1], pts[n - 2], DEF_R + 1.5); }
+      var cls = 'ln c-' + COLOR[p.pos] + (p.dash ? ' dash' : '') + (me && p.pos === me ? ' me' : '');
+      o.push('<g data-pos="' + p.pos + '"><path class="' + cls + '" d="' + pathD(pts, p.curve) + '"/>' + endDeco(pts, p.end, cls.replace(' dash', '')) + '</g>');
+    });
+
+    // defense
+    R.D.all.forEach(function (dd) {
+      var c = S([dd.x, dd.y]);
+      var t = 'M' + f1(c[0] - 12.5) + ' ' + f1(c[1] - 7.2) + ' L' + f1(c[0] + 12.5) + ' ' + f1(c[1] - 7.2) + ' L' + f1(c[0]) + ' ' + f1(c[1] + 14) + 'Z';
+      o.push('<path class="def def-' + dd.kind.toLowerCase() + '" d="' + t + '"/>');
+      o.push('<text class="dlab" x="' + f1(c[0]) + '" y="' + f1(c[1] + 1.2) + '" text-anchor="middle" dominant-baseline="middle">' + dd.label + '</text>');
+      if (dd.kind === 'LB') {
+        o.push('<text class="align" x="' + f1(c[0]) + '" y="' + f1(c[1] - 11.5) + '" text-anchor="middle">' + dd.align + '</text>');
+      }
+    });
+
+    // offense
+    ['X', 'H', 'LT', 'LG', 'C', 'RG', 'RT', 'Y', 'Z', 'QB', 'RB'].forEach(function (pos) {
+      var c = S(E.OFF[pos]);
+      var lab = pos === 'QB' ? 'Q' : pos === 'RB' ? 'R' : pos;
+      var cls = 'pl p-' + COLOR[pos];
+      var g = '<g data-pos="' + pos + '"' + (me === pos ? ' class="isme"' : '') + '>';
+      if (me === pos) g += '<circle class="mering" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="17"/>';
+      if (pos === 'C') g += '<rect class="' + cls + '" x="' + f1(c[0] - 11.5) + '" y="' + f1(c[1] - 11.5) + '" width="23" height="23"/>';
+      else g += '<circle class="' + cls + '" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="' + (OLSET[pos] ? 12 : 11.5) + '"/>';
+      g += '<text class="plab t-' + COLOR[pos] + '" x="' + f1(c[0]) + '" y="' + f1(c[1] + 0.6) + '" text-anchor="middle" dominant-baseline="middle">' + lab + '</text></g>';
+      o.push(g);
+    });
+    o.push('</svg>');
+    return o.join('');
+  }
+
+  /* ---------- state ---------- */
+  var PLAY_ORDER = ['oz', 'counter', 'duo'];
+  var HASH = { oz: 'outside-zone', counter: 'counter', duo: 'duo' };
+  var FIRST_SIDE = { oz: 'right', counter: 'left', duo: 'right' };   // the side drawn in the playbook
+  var state = { play: 'duo', front: 'all', side: 'both', special: false, mikeFlip: false, formation: 'RT', me: 'RT' };
+  try {
+    var saved = JSON.parse(localStorage.getItem('warriors-run-fits') || '{}');
+    ['special', 'mikeFlip', 'formation', 'me', 'front', 'side'].forEach(function (k) { if (k in saved) state[k] = saved[k]; });
+  } catch (e) { /* storage unavailable: defaults */ }
+  function save() {
+    try { localStorage.setItem('warriors-run-fits', JSON.stringify({ special: state.special, mikeFlip: state.mikeFlip, formation: state.formation, me: state.me, front: state.front, side: state.side })); } catch (e) { /* ignore */ }
+  }
+  function fromHash() {
+    var h = (location.hash || '').replace('#', '');
+    PLAY_ORDER.forEach(function (k) { if (HASH[k] === h) state.play = k; });
+  }
+
+  var $ = function (s) { return document.querySelector(s); };
+  var SRC_TAG = { luke: '<span class="src src-luke">per Luke</span>', inf: '<span class="src src-inf">inferred</span>' };
+
+  function card(R) {
+    var me = state.me === 'none' ? null : state.me;
+    var sideWord = R.screenRight ? 'right' : 'left';
+    var mikeTE = R.D.mikeSide > 0;
+    var id = R.play + '-' + sideWord + '-' + R.front.key;
+    var h = '<article class="card" id="' + id + '">';
+    h += '<header class="card-h"><h3><span class="form">ACE ' + R.formation + '</span> ' + R.call.toUpperCase() + '</h3>' +
+      '<span class="vs">vs ' + R.front.name.toUpperCase() + '</span></header>';
+    h += '<p class="card-sub">' + E.PLAYS[R.play].name + ', ' + sideWord + ', ' + (R.toTE ? 'to the TE' : 'away from the TE') +
+      ' <span class="dot-sep" aria-hidden="true">/</span> <span class="tech">' + R.front.line + '</span> <span class="dot-sep" aria-hidden="true">/</span> Mike 30 ' + (mikeTE ? 'TE side' : 'away') +
+      (R.special ? ' <span class="sp">Special</span>' : '') + '</p>';
+    h += '<figure class="field">' + svgFor(R, me) + '<figcaption class="vh">' + esc(R.call + ' versus ' + R.front.name + '. Assignments are listed below.') + '</figcaption></figure>';
+    h += '<ol class="asg">';
+    E.ROWS.forEach(function (pos) {
+      var a = R.A[pos] || {};
+      var t = R.text[pos];
+      if (!t) return;
+      h += '<li class="' + (me === pos ? 'isme' : '') + '"><span class="pos p-' + COLOR[pos] + '">' + (pos === 'QB' ? 'QB' : pos === 'RB' ? 'RB' : pos) + '</span><span class="txt">' + esc(t) + (SRC_TAG[a.src] || '') + '</span></li>';
+    });
+    h += '</ol>';
+    if (R.free.length) {
+      h += '<ul class="free">';
+      R.free.forEach(function (fr) { h += '<li class="fr fr-' + fr.tag + '"><span class="fdot" aria-hidden="true"></span>' + esc(fr.text) + '</li>'; });
+      h += '</ul>';
+    }
+    return h + '</article>';
+  }
+
+  function render() {
+    var play = state.play;
+    // tabs
+    document.querySelectorAll('#play-tabs button').forEach(function (b) {
+      var on = b.dataset.play === play;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+    });
+    // side chip labels follow the call names
+    var rightName = E.callName(play, true), leftName = E.callName(play, false);
+    $('#side-left').textContent = leftName + ' (L)';
+    $('#side-right').textContent = rightName + ' (R)';
+    document.querySelectorAll('#front-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.front ? 'true' : 'false'); });
+    document.querySelectorAll('#side-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.side ? 'true' : 'false'); });
+    var spAllowed = play !== 'counter';
+    var sp = $('#t-special');
+    sp.setAttribute('aria-pressed', state.special && spAllowed ? 'true' : 'false');
+    sp.disabled = !spAllowed;
+    $('#t-mike').setAttribute('aria-pressed', state.mikeFlip ? 'true' : 'false');
+    $('#t-form').setAttribute('aria-pressed', state.formation === 'LT' ? 'true' : 'false');
+    $('#me').value = state.me;
+    var note = '';
+    if (!spAllowed && state.special) note = 'Special is only for Duo and Outside Zone, so Counter shows the base rules.';
+    else if (state.special) note = 'Special (Buccs week): the Y takes the 90 lined up over him, the backside end is the QB\'s on the boot, and the uncovered tackle steps B gap then looks for work.';
+    $('#mode-note').textContent = note;
+    $('#mode-note').hidden = !note;
+
+    var sides = state.side === 'both' ? (FIRST_SIDE[play] === 'right' ? ['right', 'left'] : ['left', 'right']) : [state.side];
+    var fronts = state.front === 'all' ? ['under', 'over', '5225'] : [state.front];
+    var html = '';
+    sides.forEach(function (side) {
+      var R0 = E.resolve({ play: play, side: side, front: 'under', special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
+      html += '<h2 class="grp"><span>ACE ' + state.formation + ' ' + R0.call.toUpperCase() + '</span><small>' + E.PLAYS[play].name + ' to the ' + side + ', ' + (R0.toTE ? 'toward the TE' : 'away from the TE') + '</small></h2>';
+      html += '<div class="grid">';
+      fronts.forEach(function (fr) {
+        var R = E.resolve({ play: play, side: side, front: fr, special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
+        html += card(R);
+      });
+      html += '</div>';
+    });
+    $('#cards').innerHTML = html;
+  }
+
+  function wire() {
+    document.querySelectorAll('#play-tabs button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.play = b.dataset.play;
+        if (location.hash !== '#' + HASH[state.play]) history.replaceState(null, '', '#' + HASH[state.play]);
+        render();
+      });
+      b.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        var i = PLAY_ORDER.indexOf(state.play) + (e.key === 'ArrowRight' ? 1 : -1);
+        i = (i + PLAY_ORDER.length) % PLAY_ORDER.length;
+        state.play = PLAY_ORDER[i];
+        history.replaceState(null, '', '#' + HASH[state.play]);
+        render();
+        $('#play-tabs button[data-play="' + state.play + '"]').focus();
+      });
+    });
+    document.querySelectorAll('#front-chips button').forEach(function (b) { b.addEventListener('click', function () { state.front = b.dataset.v; save(); render(); }); });
+    document.querySelectorAll('#side-chips button').forEach(function (b) { b.addEventListener('click', function () { state.side = b.dataset.v; save(); render(); }); });
+    $('#t-special').addEventListener('click', function () { state.special = !state.special; save(); render(); });
+    $('#t-mike').addEventListener('click', function () { state.mikeFlip = !state.mikeFlip; save(); render(); });
+    $('#t-form').addEventListener('click', function () { state.formation = state.formation === 'LT' ? 'RT' : 'LT'; save(); render(); });
+    $('#me').addEventListener('change', function (e) { state.me = e.target.value; save(); render(); });
+    window.addEventListener('hashchange', function () { fromHash(); render(); });
+  }
+
+  fromHash();
+  wire();
+  render();
+})();
+
+</script>
+</body>
+</html>

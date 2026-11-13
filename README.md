@@ -17,6 +17,7 @@ enabled (Settings → Pages → Source: *Deploy from a branch* → `main` / `/ (
 | `icon-192.png`, `icon-512.png` | Manifest icons. |
 | `icon-maskable-512.png` | Manifest icon with safe-zone padding for Android's adaptive mask. |
 | `share-card.png` | The 1200x630 image link previews show. |
+| `run/index.html` | Run plays vs fronts, served at `/run/`. See [Run plays page](#run-plays-page). |
 | `.nojekyll` | Tells Pages to serve the files as-is instead of running Jekyll. |
 
 ## Updating the draw
@@ -152,3 +153,31 @@ have to move with it, because WhatsApp and iMessage do not resolve relative ones
 Opening the page from inside another app, WhatsApp especially, runs it in a
 WebView that blocks calendar downloads. The page detects that and says to open
 it in Safari rather than letting the buttons fail quietly.
+
+## Run plays page
+
+`run/index.html` is a separate single page at
+**https://ryan-withers.github.io/warriors/run/**. It draws the playbook's three
+run plays (Outside Zone: Houston/Texans, Counter: Chicago/Bears, Duo:
+Dallas/Cowboys) to both sides against the Under, Over and 5225 fronts, with
+linebackers at 90, 30 and 90, and lists every player's assignment under each
+diagram.
+
+Nothing is drawn by hand. The first `<script>` block (`RunEngine`) holds the
+fronts and the playbook rules for each position and works out every block; the
+second draws the SVGs and runs the controls. To change a rule or a front, edit
+the engine block and every diagram follows.
+
+Controls on the page:
+
+- **Special**: the Buccs-week adjustments from Luke (TE takes the 90 over him,
+  backside end is the QB's on the boot). Duo and Outside Zone only.
+- **Flip Mike**: moves the Mike's 30 to the other side of the ball.
+- **ACE LT**: mirrors everything for the TE on the left.
+- **Me**: highlights one position's blocks and rows. Remembered per browser.
+
+Assignments the playbook doesn't spell out are tagged *inferred* on the page,
+and anything from the WhatsApp thread is tagged *per Luke*.
+
+The page is `noindex` and nothing on the draw links to it, but like the rest of
+this repo it is public to anyone with the link.
