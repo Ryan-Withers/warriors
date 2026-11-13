@@ -160,8 +160,8 @@ it in Safari rather than letting the buttons fail quietly.
 **https://ryan-withers.github.io/warriors/run/**. It draws the playbook's three
 run plays (Outside Zone: Houston/Texans, Counter: Chicago/Bears, Duo:
 Dallas/Cowboys) to both sides against the Under, Over and 5225 fronts, with
-linebackers at 90, 30 and 90, and lists every player's assignment under each
-diagram.
+linebackers at 90, 30 and 90, with the TE on the right, the left or not there,
+and lists every player's assignment under each diagram.
 
 Nothing is drawn by hand. The first `<script>` block (`RunEngine`) holds the
 fronts and the playbook rules for each position and works out every block; the
@@ -173,7 +173,10 @@ Controls on the page:
 - **Special**: the Buccs-week adjustments from Luke (TE takes the 90 over him,
   backside end is the QB's on the boot). Duo and Outside Zone only.
 - **Flip Mike**: moves the Mike's 30 to the other side of the ball.
-- **ACE LT**: mirrors everything for the TE on the left.
+- **TE**: Right (ACE RT), Left (ACE LT) or None. ACE LT mirrors the drawing
+  but keeps the line's names, so the LT is always the left tackle. With no TE
+  the Y splits to the right slot (2x2), the front is set to the right, and
+  Special is off because it's a TE adjustment.
 - **Me**: highlights one position's blocks and rows. Remembered per browser.
 
 Assignments the playbook doesn't spell out are tagged *inferred* on the page,

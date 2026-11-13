@@ -7,7 +7,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#8B2937">
 <title>Warriors Run Plays vs Fronts</title>
-<meta name="description" content="Warriors outside zone, counter and duo against Under, Over and 5225 fronts, with the Special adjustments.">
+<meta name="description" content="Warriors outside zone, counter and duo against Under, Over and 5225 fronts, with the TE right, left or none, and the Special adjustments.">
 <link rel="icon" type="image/png" href="../icon-192.png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="Run plays">
@@ -132,7 +132,7 @@ button, select { font: inherit; color: inherit; }
 .grp small { font: 500 13.5px/1.3 var(--font-b); color: var(--muted); }
 :root[data-theme="dark"] .grp span { color: var(--gold); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .grp span { color: var(--gold); } }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 14px; }
 .card { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
 .card-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--maroon); padding: 9px 12px; }
 .card-h h3 { color: var(--gold); font-size: 21px; font-weight: 700; letter-spacing: .03em; line-height: 1.05; }
@@ -187,14 +187,14 @@ button, select { font: inherit; color: inherit; }
 /* assignment list */
 .asg { list-style: none; margin: 10px 0 0; padding: 0 10px; display: grid; gap: 1px; }
 .asg li { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; padding: 5px 4px; border-radius: 6px; font-size: 13.5px; line-height: 1.35; }
-.asg li.isme { background: color-mix(in srgb, var(--gold) 22%, transparent); box-shadow: inset 3px 0 0 var(--gold); }
+.asg li.isme { background: rgba(238, 181, 66, .22); background: color-mix(in srgb, var(--gold) 22%, transparent); box-shadow: inset 3px 0 0 var(--gold); }
 .pos { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 20px; padding: 0 4px; border-radius: 5px; font: 700 12px/1 var(--font-d); letter-spacing: .03em; border: 1.5px solid currentColor; }
 .pos.p-ol { color: var(--ol); background: var(--ol-fill); border-color: var(--ol); }
 .pos.p-ol { color: var(--ol-text); }
 .pos.p-y { color: var(--y-text); background: var(--y-fill); border-color: var(--y-line); }
 .pos.p-h { color: var(--h); } .pos.p-x { color: var(--x); } .pos.p-z { color: var(--z); } .pos.p-q { color: var(--q); } .pos.p-r { color: var(--r); }
 .src { display: inline-block; margin-left: 6px; padding: 1px 5px; border-radius: 4px; font: 600 10.5px/1.4 var(--font-b); letter-spacing: .03em; vertical-align: 1px; white-space: nowrap; }
-.src-luke { background: color-mix(in srgb, var(--gold) 30%, transparent); color: var(--ink); }
+.src-luke { background: rgba(238, 181, 66, .3); background: color-mix(in srgb, var(--gold) 30%, transparent); color: var(--ink); }
 .src-inf { border: 1px dashed var(--muted); color: var(--muted); }
 .free { list-style: none; margin: 6px 10px 12px; padding: 8px 10px; border-top: 1px solid var(--rule); display: grid; gap: 5px; font-size: 13px; }
 .fr { display: grid; grid-template-columns: 12px 1fr; gap: 8px; align-items: start; color: var(--ink); }
@@ -206,7 +206,7 @@ button, select { font: inherit; color: inherit; }
 .fr-bs { color: var(--muted); }
 
 /* key */
-.key { margin: 34px 0 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.key { margin: 34px 0 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
 .key section { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; }
 .key h2 { font-size: 20px; color: var(--maroon); margin-bottom: 8px; letter-spacing: .02em; }
 :root[data-theme="dark"] .key h2 { color: var(--gold); }
@@ -231,31 +231,35 @@ button, select { font: inherit; color: inherit; }
     <a class="back" href="../">&larr; Back to the draw</a>
     <p class="eyebrow">Warriors offensive playbook 2026, pages 12 to 14</p>
     <h1>Run plays vs Under, Over and 5225</h1>
-    <p class="sub">Every play to each side against each front, linebackers at 90, 30 and 90. Blocks come from the playbook rules; Special comes from Luke's notes for the Buccs.</p>
+    <p class="sub">Every play to each side against each front, with the TE on the right, the left or not there, and linebackers at 90, 30 and 90. Blocks come from the playbook rules; Special comes from Luke's notes for the Buccs.</p>
   </div>
 </header>
 <main class="wrap">
   <section class="controls" aria-label="Choose what to show">
     <div class="seg" role="tablist" id="play-tabs" aria-label="Play">
-      <button role="tab" data-play="oz" id="tab-oz">Outside zone<small>Houston / Texans</small></button>
-      <button role="tab" data-play="counter" id="tab-counter">Counter<small>Chicago / Bears</small></button>
-      <button role="tab" data-play="duo" id="tab-duo">Duo<small>Dallas / Cowboys</small></button>
+      <button type="button" role="tab" aria-controls="cards" data-play="oz" id="tab-oz">Outside zone<small>Houston / Texans</small></button>
+      <button type="button" role="tab" aria-controls="cards" data-play="counter" id="tab-counter">Counter<small>Chicago / Bears</small></button>
+      <button type="button" role="tab" aria-controls="cards" data-play="duo" id="tab-duo">Duo<small>Dallas / Cowboys</small></button>
     </div>
     <div class="row"><span class="lbl" id="lbl-front">Front</span>
       <div class="chips" id="front-chips" role="group" aria-labelledby="lbl-front">
-        <button data-v="all" id="f-all">All 3</button><button data-v="under" id="f-under">Under</button><button data-v="over" id="f-over">Over</button><button data-v="5225" id="f-5225">5225</button>
+        <button type="button" data-v="all" id="f-all">All 3</button><button type="button" data-v="under" id="f-under">Under</button><button type="button" data-v="over" id="f-over">Over</button><button type="button" data-v="5225" id="f-5225">5225</button>
       </div>
     </div>
     <div class="row"><span class="lbl" id="lbl-side">Side</span>
       <div class="chips" id="side-chips" role="group" aria-labelledby="lbl-side">
-        <button data-v="both" id="side-both">Both</button><button data-v="left" id="side-left">Left</button><button data-v="right" id="side-right">Right</button>
+        <button type="button" data-v="both" id="side-both">Both</button><button type="button" data-v="left" id="side-left">Left</button><button type="button" data-v="right" id="side-right">Right</button>
+      </div>
+    </div>
+    <div class="row"><span class="lbl" id="lbl-te">TE</span>
+      <div class="chips" id="form-chips" role="group" aria-labelledby="lbl-te">
+        <button type="button" data-v="RT" id="te-right">Right</button><button type="button" data-v="LT" id="te-left">Left</button><button type="button" data-v="NONE" id="te-none">None</button>
       </div>
     </div>
     <div class="row toggles">
-      <button class="tog" id="t-special" aria-pressed="false">Special</button>
-      <button class="tog" id="t-mike" aria-pressed="false">Flip Mike</button>
-      <button class="tog" id="t-form" aria-pressed="false">ACE LT</button>
-      <label class="me" for="me">Me
+      <button type="button" class="tog" id="t-special" aria-pressed="false">Special</button>
+      <button type="button" class="tog" id="t-mike" aria-pressed="false">Flip Mike</button>
+      <label class="me">Me
         <select id="me">
           <option value="none">None</option><option value="LT">LT</option><option value="LG">LG</option><option value="C">C</option><option value="RG">RG</option><option value="RT">RT</option><option value="Y">Y</option>
         </select>
@@ -274,7 +278,7 @@ button, select { font: inherit; color: inherit; }
     <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--me)" stroke-width="3"/></svg>Your spot</span>
   </section>
 
-  <div id="cards" aria-live="polite"></div>
+  <div id="cards" role="tabpanel" aria-labelledby="tab-duo"></div>
 
   <div class="key">
     <section aria-labelledby="k-fronts">
@@ -284,6 +288,7 @@ button, select { font: inherit; color: inherit; }
         <dt>Over</dt><dd><code>5T 1T | 3T 5T</code> 3T to the TE, 1T shading away. Mike's 30 sits in the bubble away from the TE.</dd>
         <dt>5225</dt><dd><code>5T 2T | 2T 5T</code> Both guards covered head-up, 5Ts on both tackles. Mike's 30 on the TE side.</dd>
         <dt>LBs</dt><dd>Will 90, Mike 30, Sam 90, all off the ball. <b>Flip Mike</b> puts the 30 on the other side.</dd>
+        <dt>No TE</dt><dd>The Y splits to the right slot (2x2) and the front is set to the right, so Over puts the 3T right and Under puts it left.</dd>
       </dl>
     </section>
     <section aria-labelledby="k-special">
@@ -291,8 +296,9 @@ button, select { font: inherit; color: inherit; }
       <ul>
         <li>The TE takes the linebacker lined up over him (the 90). In Nub he helps on the 5.</li>
         <li>Luke's "Dallas Special vs Over" sketch is Duo to the TE: PST takes the 5T, PSG has the 3T solo, C and BSG double the 1T up to the Mike. The backside tackle is uncovered: step B gap first, then look for work. The backside end is the QB's man on the boot.</li>
-        <li>Away from the TE I applied the same idea: the Y takes the backside 90, the end next to him is the QB's, and the RT steps B gap and climbs.</li>
+        <li>Away from the TE I applied the same idea: the Y takes the backside 90, the end next to him is the QB's, and the tackle beside him steps B gap and climbs.</li>
         <li>Outside zone only changes the Y (straight to the 90), so the Z's -1 moves to the SS.</li>
+        <li>Special is a TE adjustment, so it's off with no TE.</li>
       </ul>
     </section>
     <section aria-labelledby="k-calls">
@@ -300,8 +306,9 @@ button, select { font: inherit; color: inherit; }
       <p>Lines tagged <span class="src src-inf">inferred</span> are where the playbook doesn't say. <span class="src src-luke">per Luke</span> comes from the WhatsApp thread.</p>
       <ol>
         <li>Duo vs 5225: a head-up 2T counts as being in your BS gap, so he's yours and the C combos the playside 2T.</li>
-        <li>Bears: the Y's wrap rule is for when he's backside. Playside he blocks gap-down-backer like a tackle, and X and Z swap their counter jobs.</li>
-        <li>Houston: there's no TE to aim at, so the RB aims at the LT's outside hip.</li>
+        <li>Counter toward the TE (Bears from ACE RT): the Y's wrap rule is for when he's backside. Playside he blocks gap-down-backer like a tackle, and X and Z swap their counter jobs.</li>
+        <li>Outside zone with no TE to aim at: the RB aims at the playside tackle's outside hip.</li>
+        <li>No TE: the slot Y blocks like the H and takes the 90 over him. On counter that's the playbook's "unattached = leverage".</li>
         <li>Counter with one inside backer: the wrapper owns the Mike unless a free gap-down-backer lineman gets there first.</li>
         <li>Zone combos say "first one free climbs" because the rule is take over, knock over or climb.</li>
       </ol>
@@ -309,8 +316,8 @@ button, select { font: inherit; color: inherit; }
     <section aria-labelledby="k-ask">
       <h2 id="k-ask">Worth asking Luke</h2>
       <ul>
-        <li><b>Dallas vs Under (base):</b> the LT's BS gap holds the 3T, so by the rule nobody has the 5T outside him. Only the QB's keep fake holds him.</li>
-        <li><b>Cowboys (base) vs all three:</b> the Sam at 90 is free. That's the hole Special fills by sending the Y to him.</li>
+        <li><b>Duo into a 3T and 5T with no TE beside them</b> (Dallas vs Under from ACE RT): the playside tackle's BS gap holds the 3T, so by the rule nobody has the 5T outside him. Only the QB's keep fake holds him.</li>
+        <li><b>Duo toward the TE without Special</b> (Cowboys from ACE RT): the Sam at 90 is free against all three fronts. That's the hole Special fills by sending the Y to him.</li>
       </ul>
     </section>
   </div>
@@ -333,6 +340,15 @@ button, select { font: inherit; color: inherit; }
     LT: [-2, OLY], LG: [-1, OLY], C: [0, OLY], RG: [1, OLY], RT: [2, OLY], Y: [3, OLY],
     X: [-6.15, OLY], H: [-4.25, -1.65], Z: [6.15, -1.65], QB: [0, -3.7], RB: [0, -6.2]
   };
+  var Y_SLOT = [4.25, -1.65];   // no TE: the Y splits out to the right slot (2x2)
+  function offFor(te) {
+    var o = {};
+    for (var k in OFF) o[k] = OFF[k];
+    if (!te) o.Y = Y_SLOT;
+    return o;
+  }
+  // ACE LT mirrors the drawing, but the left tackle is still the LT: swap the line's names
+  var MIRROR = { LT: 'RT', LG: 'RG', RG: 'LG', RT: 'LT' };
 
   function gapAt(x) { return GAP_AT[String(Math.round(x * 10) / 10)]; }
   function gapOf(b, side) { return gapAt(BX[b] + side * 0.5); }
@@ -392,7 +408,7 @@ button, select { font: inherit; color: inherit; }
      Playbook: "BS gap = down, if none, PS gap = combo to BS 2nd level defender".
      Y: "BS gap (solo = down, w/ OT = combo), if none PS gap = drive".
      A head-up 2T counts as being in the BS gap of the man he's on (he's "yours"). */
-  function duo(D, d, special) {
+  function duo(D, d, special, te) {
     var A = {};
     function eff(dl) { return dl.on ? gapOf(dl.on, -d) : dl.gap; }
     function dlEff(g) { return D.dl.filter(function (x) { return eff(x) === g; })[0] || null; }
@@ -404,7 +420,8 @@ button, select { font: inherit; color: inherit; }
       var dP = dlEff(ps);
       A[b] = dP ? { type: 'combo', t: dP.id, bs: bs, src: dP.on ? 'inf' : 'pb' } : { type: 'climb', bs: bs, src: 'pb' };
     });
-    (function () {
+    if (!te) A.Y = { type: 'lev', t: 'SAM', slot: true, src: 'inf' };
+    else (function () {
       var bsY = gapOf('Y', -d), psY = gapOf('Y', d);
       var dB = dlEff(bsY);
       if (dB) A.Y = { type: 'down', t: dB.id, withOT: A.RT.type === 'combo' && A.RT.t === dB.id, src: 'pb' };
@@ -416,7 +433,7 @@ button, select { font: inherit; color: inherit; }
     OL.forEach(function (b) {
       var a = A[b];
       if (a.type !== 'combo') return;
-      var partner = OL.concat('Y').filter(function (p) {
+      var partner = OL.concat(te ? ['Y'] : []).filter(function (p) {
         return p !== b && A[p].t === a.t && (A[p].type === 'down' || A[p].type === 'drive');
       })[0];
       if (!partner) { A[b] = { type: 'drive', t: a.t, noPartner: true, src: 'pb' }; return; }
@@ -462,10 +479,12 @@ button, select { font: inherit; color: inherit; }
   /* ---------------- OUTSIDE ZONE (Houston / Texans) ----------------
      OL: "PS bucket step then take over, knock over or climb".
      Y: "PS gap covered = reach, uncovered = combo / climb".  QB boots away. */
-  function oz(D, d, special) {
+  function oz(D, d, special, te) {
     var order = d > 0 ? ['Y', 'RT', 'RG', 'C', 'LG', 'LT'] : ['LT', 'LG', 'C', 'RG', 'RT', 'Y'];
+    if (!te) order = order.filter(function (p) { return p !== 'Y'; });
     var A = {};
     if (special) A.Y = { type: 'lb', t: 'SAM', special: true, src: 'luke' };
+    if (!te) A.Y = { type: 'lev', t: 'SAM', slot: true, src: 'inf' };
     function dl(id) { return D.byId[id]; }
     var cov = {};
     order.forEach(function (b) {
@@ -493,7 +512,8 @@ button, select { font: inherit; color: inherit; }
     });
     A.X = { type: 'lev', t: 'FS', src: 'pb' };
     A.H = { type: 'lev', t: 'WILL', src: 'pb' };
-    A.Z = { type: 'lev', t: special ? 'SS' : 'SAM', src: special ? 'inf' : 'pb' };
+    var zSS = special || !te;   // the Y already has the Sam
+    A.Z = { type: 'lev', t: zSS ? 'SS' : 'SAM', src: zSS ? 'inf' : 'pb' };
 
     var claimed = { WILL: 1, SAM: 1 };
     var climbers = [];
@@ -518,7 +538,7 @@ button, select { font: inherit; color: inherit; }
       A[p.c.b].climb = p.l.id;
     });
     A.QB = { type: 'ozboot', src: 'pb' };
-    A.RB = { type: 'oz', src: d > 0 ? 'pb' : 'inf' };
+    A.RB = { type: 'oz', src: te && d > 0 ? 'pb' : 'inf' };
     var bEnd = D.dl.filter(function (x) { return x.side === -d && x.tech === 5; })[0];
     var hit = {};
     Object.keys(A).forEach(function (k) { if (A[k].t) hit[A[k].t] = 1; });
@@ -529,9 +549,9 @@ button, select { font: inherit; color: inherit; }
   /* ---------------- COUNTER (Chicago / Bears) ----------------
      BSG: flat pull, kick out EMLOS.  BST: no TE = pull & wrap 1st colour inside; with TE = hinge.
      C, PSG, PST: gap - down - backer.  Y attached (backside) = pull & wrap. */
-  function counter(D, d) {
+  function counter(D, d, te) {
     var pst = d > 0 ? 'RT' : 'LT', psg = d > 0 ? 'RG' : 'LG', bsg = d > 0 ? 'LG' : 'RG', bst = d > 0 ? 'LT' : 'RT';
-    var teP = d > 0;
+    var teP = te && d > 0;   // TE on the playside
     var gdb = teP ? ['Y', pst, psg, 'C'] : [pst, psg, 'C'];
     var A = {};
     gdb.forEach(function (b) {
@@ -551,13 +571,15 @@ button, select { font: inherit; color: inherit; }
     var emlos = em ? em.id : (d > 0 ? 'SAM' : 'WILL');
     A[bsg] = { type: 'kick', t: emlos, src: 'pb' };
     var wrapper;
-    if (teP) { A[bst] = { type: 'wrap', t: null, src: 'pb' }; wrapper = bst; }
+    var teBack = te && d < 0;   // TE attached on the backside
+    if (!teBack) { A[bst] = { type: 'wrap', t: null, src: 'pb' }; wrapper = bst; }
     else {
       var h = D.dl.filter(function (x) { return x.gap === gapOf(bst, -d); })[0];
       A[bst] = { type: 'hinge', t: h ? h.id : null, src: 'pb' };
       A.Y = { type: 'wrap', t: null, src: 'pb' };
       wrapper = 'Y';
     }
+    if (!te) A.Y = { type: 'lev', t: 'SAM', slot: true, src: 'pb' };   // unattached = leverage
     var backers = gdb.filter(function (b) { return A[b].type === 'backer'; });
     var mike = D.byId.MIKE, mikeTaken = false;
     if (backers.length) {
@@ -612,6 +634,7 @@ button, select { font: inherit; color: inherit; }
       } else if (a.type === 'climb') s = 'Both gaps empty: climb';
       else if (a.type === 'lb') s = 'Special: take the Sam (90) lined up over you';
       else if (a.type === 'stepwork') s = 'Special: the end is the QB\'s. Step B gap first, then ' + (a.climb ? 'climb to the ' + n(a.climb) : 'look for work downfield');
+      else if (a.type === 'lev') s = 'No TE, you\'re in the right slot: leverage block the Sam (90), like the H';
       T[b] = s;
     });
     T.H = 'Leverage block the Will (90)';
@@ -637,13 +660,15 @@ button, select { font: inherit; color: inherit; }
         if (b === 'Y') s = 'PS gap uncovered: combo the ' + n(a.t) + ' with ' + a.partner + climb;
         else s = 'Uncovered: combo the ' + n(a.t) + ' with ' + a.partner + climb;
       } else if (a.type === 'climb') s = 'Uncovered: ' + (a.climb ? 'climb to the ' + n(a.climb) : 'climb to the 2nd level');
+      else if (a.type === 'lev') s = 'No TE, you\'re in the right slot: -1 block, the Sam (90)';
       T[b] = s;
     });
     T.H = '-1 block: the Will (90)';
     T.X = '-1 block: the FS';
-    T.Z = R.special ? '-1 block: the SS (Y has the Sam)' : '-1 block: the Sam (90)';
+    T.Z = (R.special || !R.te) ? '-1 block: the SS (Y has the Sam)' : '-1 block: the Sam (90)';
     T.QB = '45 degree track to the mesh, then boot away';
-    T.RB = d > 0 ? 'Zone steps, aim the butt of the TE: bend, bang, bounce' : 'Zone steps, no TE this side so aim the LT\'s outside hip: bend, bang, bounce';
+    T.RB = (R.te && d > 0) ? 'Zone steps, aim the butt of the TE: bend, bang, bounce'
+      : 'Zone steps, no TE ' + (R.te ? 'this side ' : '') + 'so aim the ' + (d > 0 ? 'RT' : 'LT') + '\'s outside hip: bend, bang, bounce';
     return T;
   }
 
@@ -664,6 +689,7 @@ button, select { font: inherit; color: inherit; }
       else if (a.type === 'kick') s = 'Flat pull, kick out the EMLOS: ' + n(a.t) + (a.t === 'SAM' ? ' as he fills' : '');
       else if (a.type === 'wrap') s = (b === 'Y' ? 'Attached: pull & wrap, ' : 'No TE behind you: pull & wrap, ') + '1st colour inside: ' + (a.t ? n(a.t) : 'Mike is taken, fit the next one');
       else if (a.type === 'hinge') s = 'TE is pulling: hinge, protect B gap then the 5T';
+      else if (a.type === 'lev') s = 'Unattached (no TE): leverage block the Sam (90)';
       T[b] = s;
     });
     T.H = 'Leverage block the Will (90)';
@@ -685,12 +711,14 @@ button, select { font: inherit; color: inherit; }
       var backside = o.side === -d;
       if (o.id === R.qbMan) { out.push({ id: o.id, tag: 'qb', text: nm + ': the QB\'s man on the boot' }); return; }
       if (R.play === 'duo' && o.id === 'MIKE') { out.push({ id: o.id, tag: 'rb', text: 'Mike (30): the RB reads him for the bounce' }); return; }
-      if (R.play === 'duo' && !R.special && o.id === 'SAM' && d > 0) {
+      if (R.play === 'duo' && !R.special && R.te && o.id === 'SAM' && d > 0) {
         out.push({ id: o.id, tag: 'flag', text: 'Sam (90): free in base. Only the QB keep fake holds him, which is why Special sends the Y to him' });
         return;
       }
       if (R.play === 'duo' && !R.special && o.kind === 'DL' && o.side === d) {
-        out.push({ id: o.id, tag: 'flag', text: nm + ': nobody has him by the letter of the rule (LT\'s BS gap holds the 3T). Only the QB keep fake holds him. Ask Luke' });
+        var pst = d > 0 ? 'RT' : 'LT';
+        var held = A[pst] && A[pst].t ? name(D, A[pst].t) : 'another DL';
+        out.push({ id: o.id, tag: 'flag', text: nm + ': nobody has him by the letter of the rule (' + pst + '\'s BS gap holds the ' + held + '). Only the QB keep fake holds him. Ask Luke' });
         return;
       }
       if (backside) { out.push({ id: o.id, tag: 'bs', text: nm + ': backside, unblocked' }); return; }
@@ -710,7 +738,7 @@ button, select { font: inherit; color: inherit; }
     }
     Object.keys(A).forEach(function (pos) {
       var a = A[pos];
-      var s = OFF[pos];
+      var s = R.OFF[pos];
       if (!s || pos === 'QB' || pos === 'RB') return;
       var t = a.t ? D.byId[a.t] : null;
       switch (a.type) {
@@ -751,41 +779,42 @@ button, select { font: inherit; color: inherit; }
           add({ pos: pos, curve: true, pts: [s, [s[0] + d * 0.25, -2.1], [t.x - d * 0.85, -2.1], [t.x - d * 0.34, t.y - (t.kind === 'LB' ? 0.85 : 0.55)]], end: 'T', trimS: 'off' });
           break;
         case 'wrap':
-          var hole = d < 0 ? -2.2 : 3.2;
+          var hole = R.te && d > 0 ? 3.2 : d * 2.2;
           var pts = [s, [s[0] + d * 0.2, -2.8], [hole - d * 0.55, -2.8], [hole, -0.1], [hole - d * 0.05, 2.3]];
           if (t) { pts.push([t.x, t.y]); add({ pos: pos, curve: true, pts: pts, end: 'T', trimS: 'off', trimE: 'def' }); }
           else { pts.push([hole - d * 0.4, 4.3]); add({ pos: pos, curve: true, pts: pts, end: 'arrow', trimS: 'off' }); }
           break;
         case 'hinge':
-          add({ pos: pos, pts: [s, [s[0] + d * 0.42, s[1] - 0.62]], end: 'T', trimS: 'off' });
+          add({ pos: pos, pts: [s, [s[0] + d * 0.62, s[1] - 1.05]], end: 'T', trimS: 'off' });
           break;
       }
     });
     // QB
-    var q = OFF.QB, qa = A.QB;
+    var q = R.OFF.QB, qa = A.QB;
     if (qa.type === 'keepfake') add({ pos: 'QB', pts: [q, [d * 2.7, -3.95]], end: 'dot', dash: true, trimS: 'off' });
-    if (qa.type === 'boot') add({ pos: 'QB', curve: true, pts: [q, [d * 0.4, -4.3], [-d * 0.9, -4.55], [-d * 2.9, -4.1]], end: 'dot', dash: true, trimS: 'off' });
+    if (qa.type === 'boot') add({ pos: 'QB', curve: true, pts: [q, [d * 0.6, -4.65], [-d * 0.9, -4.8], [-d * 2.9, -4.2]], end: 'dot', dash: true, trimS: 'off' });
     if (qa.type === 'ozboot') add({ pos: 'QB', curve: true, pts: [q, [d * 0.95, -4.25], [d * 1.05, -5.3], [-d * 0.2, -5.6], [-d * 1.95, -5.2]], end: 'dot', trimS: 'off' });
     if (qa.type === 'reverse') add({ pos: 'QB', curve: true, pts: [q, [-d * 0.85, -3.75], [-d * 0.2, -4.5], [d * 0.6, -4.8]], end: 'dot', trimS: 'off' });
     // RB
-    var r = OFF.RB;
+    var r = R.OFF.RB;
     if (A.RB.type === 'duo') {
       add({ pos: 'RB', pts: [r, [d * 0.5, 0.1], [d * 0.5, 3.5]], end: 'arrow', trimS: 'off' });
       add({ pos: 'RB', pts: [[d * 0.5, -0.3], [d * 1.8, 3.1]], end: 'arrow', dash: true });
     }
     if (A.RB.type === 'oz') {
       // aim: butt of the TE (to the TE) or the LT's outside hip (away), then bend / bang / bounce
-      var aim = d > 0 ? [2.75, -2.0] : [-2.35, -2.0];
-      var opt = d > 0
+      var teAim = R.te && d > 0;
+      var aim = teAim ? [2.75, -2.0] : [d * 2.35, -2.0];
+      var opt = teAim
         ? { bounce: [[3.75, -0.5], [4.35, 2.9]], bang: [[2.5, 0.25], [2.5, 3.0]], bend: [[1.5, 0.25], [0.95, 2.7]] }
-        : { bounce: [[-3.3, -0.5], [-3.9, 2.9]], bang: [[-2.5, 0.25], [-2.55, 3.0]], bend: [[-1.5, 0.25], [-0.95, 2.7]] };
+        : { bounce: [[d * 3.3, -0.5], [d * 3.9, 2.9]], bang: [[d * 2.5, 0.25], [d * 2.55, 3.0]], bend: [[d * 1.5, 0.25], [d * 0.95, 2.7]] };
       add({ pos: 'RB', curve: true, pts: [r, [aim[0] * 0.45, -4.7], aim], end: 'arrow', trimS: 'off' });
       ['bounce', 'bang', 'bend'].forEach(function (k) {
         add({ pos: 'RB', curve: true, pts: [aim].concat(opt[k]), end: 'arrow', dash: true });
       });
     }
     if (A.RB.type === 'counter') {
-      var holeX = d < 0 ? -2.2 : 3.2;
+      var holeX = R.te && d > 0 ? 3.2 : d * 2.2;
       add({ pos: 'RB', curve: true, pts: [r, [-d * 0.75, -5.65], [d * 0.1, -4.35], [holeX * 0.75, -1.9], [holeX - d * 0.12, 1.2], [holeX - d * 0.3, 3.5]], end: 'arrow', trimS: 'off' });
     }
     return P;
@@ -802,20 +831,31 @@ button, select { font: inherit; color: inherit; }
     duo: { key: 'duo', name: 'Duo', short: 'Duo', page: 14 }
   };
 
-  /* opts: { play, side: 'left'|'right' (screen), front, special, mikeFlip, formation: 'RT'|'LT' } */
+  /* opts: { play, side: 'left'|'right' (screen), front, special, mikeFlip, formation: 'RT'|'LT'|'NONE' } */
   function resolve(opts) {
-    var flip = opts.formation === 'LT' ? -1 : 1;
+    var form = opts.formation === 'LT' ? 'LT' : opts.formation === 'NONE' ? 'NONE' : 'RT';
+    var te = form !== 'NONE';
+    var flip = form === 'LT' ? -1 : 1;
     var screenRight = opts.side === 'right';
-    var d = (screenRight ? 1 : -1) * flip;   // +1 = toward the TE
+    var d = (screenRight ? 1 : -1) * flip;   // +1 = toward the TE (or the front's strength when there is no TE)
     var D = buildDefense(opts.front, opts.mikeFlip);
-    var special = !!opts.special && opts.play !== 'counter';
-    var core = opts.play === 'duo' ? duo(D, d, special) : opts.play === 'oz' ? oz(D, d, special) : counter(D, d);
-    var R = { play: opts.play, d: d, D: D, special: special, A: core.A, qbMan: core.qbMan, wrapper: core.wrapper, bsg: core.bsg,
-      flip: flip, formation: opts.formation, front: FRONTS[opts.front], call: callName(opts.play, screenRight), screenRight: screenRight };
+    var special = !!opts.special && opts.play !== 'counter' && te;
+    var core = opts.play === 'duo' ? duo(D, d, special, te) : opts.play === 'oz' ? oz(D, d, special, te) : counter(D, d, te);
+    var R = { play: opts.play, d: d, D: D, te: te, special: special, A: core.A, qbMan: core.qbMan, wrapper: core.wrapper, bsg: core.bsg,
+      flip: flip, formation: form, formName: te ? 'ACE ' + form : 'NO TE', OFF: offFor(te),
+      front: FRONTS[opts.front], call: callName(opts.play, screenRight), screenRight: screenRight };
+    R.toTE = te && d > 0;
+    R.dirText = te ? (d > 0 ? 'to the TE' : 'away from the TE') : 'no TE';
     R.text = opts.play === 'duo' ? textDuo(R) : opts.play === 'oz' ? textOZ(R) : textCounter(R);
     R.free = freeList(R);
     R.prims = prims(R);
-    R.toTE = d > 0;
+    R.phys = function (pos) { return flip < 0 && MIRROR[pos] ? MIRROR[pos] : pos; };
+    function mapNames(t) { return flip < 0 ? String(t).replace(/\b(LT|LG|RG|RT)\b/g, function (m) { return MIRROR[m]; }) : t; }
+    R.rows = ROWS.map(function (P) {
+      var eng = R.phys(P), a = R.A[eng] || {};
+      return { pos: P, eng: eng, text: R.text[eng] ? mapNames(R.text[eng]) : '', src: a.src || '' };
+    }).filter(function (r) { return r.text; });
+    R.free = R.free.map(function (f) { return { id: f.id, tag: f.tag, text: mapNames(f.text) }; });
     return R;
   }
 
@@ -874,7 +914,7 @@ button, select { font: inherit; color: inherit; }
     function Y(y) { return LOSY - y * UY; }
     function S(p) { return [X(p[0]), Y(p[1])]; }
     var o = [];
-    var label = 'ACE ' + R.formation + ' ' + R.call + ' versus ' + R.front.name + (R.special ? ', Special' : '');
+    var label = R.formName + ' ' + R.call + ' versus ' + R.front.name + (R.special ? ', Special' : '');
     o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(label) + '">');
     o.push('<rect class="fld" x="0" y="0" width="' + W + '" height="' + H + '" rx="6"/>');
     [10, 5, -5].forEach(function (yd) { o.push('<line class="yl" x1="0" x2="' + W + '" y1="' + f1(Y(yd)) + '" y2="' + f1(Y(yd)) + '"/>'); });
@@ -904,8 +944,9 @@ button, select { font: inherit; color: inherit; }
       var pts = p.pts.map(S);
       if (p.trimS === 'off') pts[0] = toward(pts[0], pts[1], OFF_R + 1.5);
       if (p.trimE === 'def') { var n = pts.length; pts[n - 1] = toward(pts[n - 1], pts[n - 2], DEF_R + 1.5); }
-      var cls = 'ln c-' + COLOR[p.pos] + (p.dash ? ' dash' : '') + (me && p.pos === me ? ' me' : '');
-      o.push('<g data-pos="' + p.pos + '"><path class="' + cls + '" d="' + pathD(pts, p.curve) + '"/>' + endDeco(pts, p.end, cls.replace(' dash', '')) + '</g>');
+      var who = R.phys(p.pos);
+      var cls = 'ln c-' + COLOR[p.pos] + (p.dash ? ' dash' : '') + (me && who === me ? ' me' : '');
+      o.push('<g data-pos="' + who + '"><path class="' + cls + '" d="' + pathD(pts, p.curve) + '"/>' + endDeco(pts, p.end, cls.replace(' dash', '')) + '</g>');
     });
 
     // defense
@@ -921,11 +962,12 @@ button, select { font: inherit; color: inherit; }
 
     // offense
     ['X', 'H', 'LT', 'LG', 'C', 'RG', 'RT', 'Y', 'Z', 'QB', 'RB'].forEach(function (pos) {
-      var c = S(E.OFF[pos]);
-      var lab = pos === 'QB' ? 'Q' : pos === 'RB' ? 'R' : pos;
+      var c = S(R.OFF[pos]);
+      var who = R.phys(pos);
+      var lab = pos === 'QB' ? 'Q' : pos === 'RB' ? 'R' : who;
       var cls = 'pl p-' + COLOR[pos];
-      var g = '<g data-pos="' + pos + '"' + (me === pos ? ' class="isme"' : '') + '>';
-      if (me === pos) g += '<circle class="mering" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="17"/>';
+      var g = '<g data-pos="' + who + '"' + (me === who ? ' class="isme"' : '') + '>';
+      if (me === who) g += '<circle class="mering" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="17"/>';
       if (pos === 'C') g += '<rect class="' + cls + '" x="' + f1(c[0] - 11.5) + '" y="' + f1(c[1] - 11.5) + '" width="23" height="23"/>';
       else g += '<circle class="' + cls + '" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="' + (OLSET[pos] ? 12 : 11.5) + '"/>';
       g += '<text class="plab t-' + COLOR[pos] + '" x="' + f1(c[0]) + '" y="' + f1(c[1] + 0.6) + '" text-anchor="middle" dominant-baseline="middle">' + lab + '</text></g>';
@@ -940,10 +982,14 @@ button, select { font: inherit; color: inherit; }
   var HASH = { oz: 'outside-zone', counter: 'counter', duo: 'duo' };
   var FIRST_SIDE = { oz: 'right', counter: 'left', duo: 'right' };   // the side drawn in the playbook
   var state = { play: 'duo', front: 'all', side: 'both', special: false, mikeFlip: false, formation: 'RT', me: 'RT' };
+  var VALID = {
+    special: [true, false], mikeFlip: [true, false], formation: ['RT', 'LT', 'NONE'],
+    me: ['none', 'LT', 'LG', 'C', 'RG', 'RT', 'Y'], front: ['all', 'under', 'over', '5225'], side: ['both', 'left', 'right']
+  };
   try {
     var saved = JSON.parse(localStorage.getItem('warriors-run-fits') || '{}');
-    ['special', 'mikeFlip', 'formation', 'me', 'front', 'side'].forEach(function (k) { if (k in saved) state[k] = saved[k]; });
-  } catch (e) { /* storage unavailable: defaults */ }
+    Object.keys(VALID).forEach(function (k) { if (saved && VALID[k].indexOf(saved[k]) >= 0) state[k] = saved[k]; });
+  } catch (e) { /* storage unavailable or unreadable: defaults */ }
   function save() {
     try { localStorage.setItem('warriors-run-fits', JSON.stringify({ special: state.special, mikeFlip: state.mikeFlip, formation: state.formation, me: state.me, front: state.front, side: state.side })); } catch (e) { /* ignore */ }
   }
@@ -961,18 +1007,15 @@ button, select { font: inherit; color: inherit; }
     var mikeTE = R.D.mikeSide > 0;
     var id = R.play + '-' + sideWord + '-' + R.front.key;
     var h = '<article class="card" id="' + id + '">';
-    h += '<header class="card-h"><h3><span class="form">ACE ' + R.formation + '</span> ' + R.call.toUpperCase() + '</h3>' +
+    h += '<header class="card-h"><h3><span class="form">' + R.formName + '</span> ' + R.call.toUpperCase() + '</h3>' +
       '<span class="vs">vs ' + R.front.name.toUpperCase() + '</span></header>';
-    h += '<p class="card-sub">' + E.PLAYS[R.play].name + ', ' + sideWord + ', ' + (R.toTE ? 'to the TE' : 'away from the TE') +
+    h += '<p class="card-sub">' + E.PLAYS[R.play].name + ', ' + sideWord + ', ' + R.dirText +
       ' <span class="dot-sep" aria-hidden="true">/</span> <span class="tech">' + R.front.line + '</span> <span class="dot-sep" aria-hidden="true">/</span> Mike 30 ' + (mikeTE ? 'TE side' : 'away') +
       (R.special ? ' <span class="sp">Special</span>' : '') + '</p>';
     h += '<figure class="field">' + svgFor(R, me) + '<figcaption class="vh">' + esc(R.call + ' versus ' + R.front.name + '. Assignments are listed below.') + '</figcaption></figure>';
     h += '<ol class="asg">';
-    E.ROWS.forEach(function (pos) {
-      var a = R.A[pos] || {};
-      var t = R.text[pos];
-      if (!t) return;
-      h += '<li class="' + (me === pos ? 'isme' : '') + '"><span class="pos p-' + COLOR[pos] + '">' + (pos === 'QB' ? 'QB' : pos === 'RB' ? 'RB' : pos) + '</span><span class="txt">' + esc(t) + (SRC_TAG[a.src] || '') + '</span></li>';
+    R.rows.forEach(function (r) {
+      h += '<li' + (me === r.pos ? ' class="isme"' : '') + '><span class="pos p-' + COLOR[r.pos] + '">' + r.pos + '</span><span class="txt">' + esc(r.text) + (SRC_TAG[r.src] || '') + '</span></li>';
     });
     h += '</ol>';
     if (R.free.length) {
@@ -997,16 +1040,20 @@ button, select { font: inherit; color: inherit; }
     $('#side-right').textContent = rightName + ' (R)';
     document.querySelectorAll('#front-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.front ? 'true' : 'false'); });
     document.querySelectorAll('#side-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.side ? 'true' : 'false'); });
-    var spAllowed = play !== 'counter';
+    document.querySelectorAll('#form-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.formation ? 'true' : 'false'); });
+    $('#cards').setAttribute('aria-labelledby', 'tab-' + play);
+    var noTE = state.formation === 'NONE';
+    var spAllowed = play !== 'counter' && !noTE;
     var sp = $('#t-special');
     sp.setAttribute('aria-pressed', state.special && spAllowed ? 'true' : 'false');
     sp.disabled = !spAllowed;
     $('#t-mike').setAttribute('aria-pressed', state.mikeFlip ? 'true' : 'false');
-    $('#t-form').setAttribute('aria-pressed', state.formation === 'LT' ? 'true' : 'false');
     $('#me').value = state.me;
-    var note = '';
-    if (!spAllowed && state.special) note = 'Special is only for Duo and Outside Zone, so Counter shows the base rules.';
-    else if (state.special) note = 'Special (Buccs week): the Y takes the 90 lined up over him, the backside end is the QB\'s on the boot, and the uncovered tackle steps B gap then looks for work.';
+    var notes = [];
+    if (noTE) notes.push('No TE: the Y is split in the right slot (2x2) and the front is set to the right, so Over puts the 3T on the right and Under puts it on the left.');
+    if (state.special && !spAllowed) notes.push(noTE ? 'Special is a TE adjustment, so it is off with no TE.' : 'Special is only for Duo and Outside Zone, so Counter shows the base rules.');
+    else if (state.special) notes.push('Special (Buccs week): the Y takes the 90 lined up over him, the backside end is the QB\'s on the boot, and the uncovered tackle steps B gap then looks for work.');
+    var note = notes.join(' ');
     $('#mode-note').textContent = note;
     $('#mode-note').hidden = !note;
 
@@ -1015,7 +1062,7 @@ button, select { font: inherit; color: inherit; }
     var html = '';
     sides.forEach(function (side) {
       var R0 = E.resolve({ play: play, side: side, front: 'under', special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
-      html += '<h2 class="grp"><span>ACE ' + state.formation + ' ' + R0.call.toUpperCase() + '</span><small>' + E.PLAYS[play].name + ' to the ' + side + ', ' + (R0.toTE ? 'toward the TE' : 'away from the TE') + '</small></h2>';
+      html += '<h2 class="grp"><span>' + R0.formName + ' ' + R0.call.toUpperCase() + '</span><small>' + E.PLAYS[play].name + ' to the ' + side + ', ' + (R0.te ? (R0.toTE ? 'toward the TE' : 'away from the TE') : 'no TE') + '</small></h2>';
       html += '<div class="grid">';
       fronts.forEach(function (fr) {
         var R = E.resolve({ play: play, side: side, front: fr, special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
@@ -1047,7 +1094,7 @@ button, select { font: inherit; color: inherit; }
     document.querySelectorAll('#side-chips button').forEach(function (b) { b.addEventListener('click', function () { state.side = b.dataset.v; save(); render(); }); });
     $('#t-special').addEventListener('click', function () { state.special = !state.special; save(); render(); });
     $('#t-mike').addEventListener('click', function () { state.mikeFlip = !state.mikeFlip; save(); render(); });
-    $('#t-form').addEventListener('click', function () { state.formation = state.formation === 'LT' ? 'RT' : 'LT'; save(); render(); });
+    document.querySelectorAll('#form-chips button').forEach(function (b) { b.addEventListener('click', function () { state.formation = b.dataset.v; save(); render(); }); });
     $('#me').addEventListener('change', function (e) { state.me = e.target.value; save(); render(); });
     window.addEventListener('hashchange', function () { fromHash(); render(); });
   }
