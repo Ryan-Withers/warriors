@@ -171,9 +171,13 @@ the engine block and every diagram follows.
 Controls on the page:
 
 - **Special**: the Buccs-week adjustments from Luke (TE takes the 90 over him,
-  backside end is the QB's on the boot). Duo and Outside Zone only.
-- **Flip Mike**: moves the Mike's 10 to the other A gap. By default he sits in
-  the open A gap: away from the TE vs Under, to the TE vs Over and 5225.
+  backside end is the QB's on the boot). Duo only, and it needs a TE, so the
+  toggle is disabled on Outside Zone, Counter and with no TE. On Outside Zone the
+  TE still combos or chips and climbs.
+- **Flip Mike**: moves the Mike's 10 to the other A gap. By default he's the
+  backside 10 vs Under and the frontside 10 vs Over and 5225 (both 2Ts move
+  strong, leaving the strong A gap). Frontside is the TE side, or the right
+  with no TE.
 - **TE**: Right (ACE RT), Left (ACE LT) or None. ACE LT mirrors the drawing
   but keeps the line's names, so the LT is always the left tackle. With no TE
   the Y splits to the right slot (2x2), the front is set to the right, and
@@ -187,9 +191,7 @@ thread is tagged *per Luke*.
 A card gets a red border and a **Doesn't work as drawn** warning when the rules
 leave a defender at the point of attack unblocked (for example Duo into a 3T
 and 5T with no TE beside them, or Duo toward the TE without Special, where the
-90 Sam is free). The group heading lists those fronts. Turning on Special for a
-play that has no Special version (Counter, or anything with no TE) shows a
-**No Special version** note on each card instead of quietly changing nothing.
+90 Sam is free). The group heading lists those fronts.
 Counter toward the TE isn't something the team runs, so those cards carry a red
 **We don't run this** warning and are only a sketch.
 

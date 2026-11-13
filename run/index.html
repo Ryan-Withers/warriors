@@ -297,10 +297,10 @@ button, select { font: inherit; color: inherit; }
     <section aria-labelledby="k-fronts">
       <h2 id="k-fronts">The fronts</h2>
       <dl>
-        <dt>Under</dt><dd><code>5T 3T | 1T 5T</code> 3T away from the TE, 1T shading the C to the TE side. Mike's 10 sits in the open A gap, away from the TE.</dd>
-        <dt>Over</dt><dd><code>5T 1T | 3T 5T</code> 3T to the TE, 1T shading away. Mike's 10 sits in the open A gap on the TE side.</dd>
-        <dt>5225</dt><dd><code>5T 2T | 2T 5T</code> Both guards covered head-up, 5Ts on both tackles. Mike's 10 on the TE side.</dd>
-        <dt>LBs</dt><dd>Will 90, Mike 10, Sam 90, all off the ball. <b>Flip Mike</b> puts the 10 in the other A gap.</dd>
+        <dt>Under</dt><dd><code>5T 3T | 1T 5T</code> 3T away from the TE, 1T shading the C to the TE side. The Mike is the backside 10, in the open A gap away from the TE.</dd>
+        <dt>Over</dt><dd><code>5T 1T | 3T 5T</code> 3T to the TE, 1T shading away. The Mike is the frontside 10, in the open A gap to the TE.</dd>
+        <dt>5225</dt><dd><code>5T 2T | 2T 5T</code> Both guards covered head-up, 5Ts on both tackles. Both 2Ts move strong at the snap and leave the strong A gap, so the Mike is the frontside 10. After the move it looks like Over. Blocks are drawn from where they line up.</dd>
+        <dt>LBs</dt><dd>Will 90, Mike 10, Sam 90, all off the ball. Frontside is the TE side (the right with no TE). <b>Flip Mike</b> puts the 10 in the other A gap.</dd>
         <dt>No TE</dt><dd>The Y splits to the right slot (2x2) and the front is set to the right, so Over puts the 3T right and Under puts it left.</dd>
       </dl>
     </section>
@@ -310,8 +310,7 @@ button, select { font: inherit; color: inherit; }
         <li>The TE takes the linebacker lined up over him (the 90). In Nub he helps on the 5.</li>
         <li>Luke's "Dallas Special vs Over" sketch is Duo to the TE: PST takes the 5T, PSG has the 3T solo, C and BSG double the 1T up to the Mike. The backside tackle is uncovered: step B gap first, then look for work. The backside end is the QB's man on the boot.</li>
         <li>Away from the TE I applied the same idea: the Y takes the backside 90, the end next to him is the QB's, and the tackle beside him steps B gap and climbs.</li>
-        <li>Outside zone only changes the Y (straight to the 90), so the Z's -1 moves to the SS.</li>
-        <li>Special is a TE adjustment, so it's off with no TE.</li>
+        <li>Special is Duo only (Dallas / Cowboys) and needs a TE, so the toggle is off for Outside Zone, Counter and no TE. On Outside Zone the TE still combos or chips and climbs.</li>
       </ul>
     </section>
     <section aria-labelledby="k-calls">
@@ -373,7 +372,7 @@ button, select { font: inherit; color: inherit; }
       line: '5T 3T | 1T 5T', blurb: '3T away from the TE, 1T shade to the TE' },
     over: { key: 'over', name: 'Over', dl: [['W5', 5, -1], ['W1', 1, -1], ['S3', 3, 1], ['S5', 5, 1]], mike: 1,
       line: '5T 1T | 3T 5T', blurb: '3T to the TE, 1T shade away' },
-    '5225': { key: '5225', name: '5225', dl: [['W5', 5, -1], ['W2', 2, -1], ['S2', 2, 1], ['S5', 5, 1]], mike: 1,
+    '5225': { key: '5225', name: '5225', dl: [['W5', 5, -1], ['W2', 2, -1], ['S2', 2, 1], ['S5', 5, 1]], mike: 1, move: '2s move strong',
       line: '5T 2T | 2T 5T', blurb: '2Ts head up on both guards' }
   };
 
@@ -496,7 +495,6 @@ button, select { font: inherit; color: inherit; }
     var order = d > 0 ? ['Y', 'RT', 'RG', 'C', 'LG', 'LT'] : ['LT', 'LG', 'C', 'RG', 'RT', 'Y'];
     if (!te) order = order.filter(function (p) { return p !== 'Y'; });
     var A = {};
-    if (special) A.Y = { type: 'lb', t: 'SAM', special: true, src: 'luke' };
     if (!te) A.Y = { type: 'lev', t: 'SAM', slot: true, src: 'ok' };
     function dl(id) { return D.byId[id]; }
     var cov = {};
@@ -525,8 +523,8 @@ button, select { font: inherit; color: inherit; }
     });
     A.X = { type: 'lev', t: 'FS', src: 'pb' };
     A.H = { type: 'lev', t: 'WILL', src: 'pb' };
-    var zSS = special || !te;   // the Y already has the Sam
-    A.Z = { type: 'lev', t: zSS ? 'SS' : 'SAM', src: special ? 'inf' : zSS ? 'ok' : 'pb' };
+    var zSS = !te;   // no TE: the slot Y already has the Sam
+    A.Z = { type: 'lev', t: zSS ? 'SS' : 'SAM', src: zSS ? 'ok' : 'pb' };
 
     var claimed = { WILL: 1, SAM: 1 };
     var climbers = [];
@@ -678,7 +676,7 @@ button, select { font: inherit; color: inherit; }
     });
     T.H = '-1 block: the Will (90)';
     T.X = '-1 block: the FS';
-    T.Z = (R.special || !R.te) ? '-1 block: the SS (Y has the Sam)' : '-1 block: the Sam (90)';
+    T.Z = !R.te ? '-1 block: the SS (Y has the Sam)' : '-1 block: the Sam (90)';
     T.QB = '45 degree track to the mesh, then boot away';
     T.RB = (R.te && d > 0) ? 'Zone steps, aim the butt of the TE: bend, bang, bounce'
       : 'Zone steps, no TE ' + (R.te ? 'this side ' : '') + 'so aim the ' + (d > 0 ? 'RT' : 'LT') + '\'s outside hip: bend, bang, bounce';
@@ -852,7 +850,7 @@ button, select { font: inherit; color: inherit; }
     var screenRight = opts.side === 'right';
     var d = (screenRight ? 1 : -1) * flip;   // +1 = toward the TE (or the front's strength when there is no TE)
     var D = buildDefense(opts.front, opts.mikeFlip);
-    var special = !!opts.special && opts.play !== 'counter' && te;
+    var special = !!opts.special && opts.play === 'duo' && te;   // Special is a Duo-only call
     var core = opts.play === 'duo' ? duo(D, d, special, te) : opts.play === 'oz' ? oz(D, d, special, te) : counter(D, d, te);
     var R = { play: opts.play, d: d, D: D, te: te, special: special, A: core.A, qbMan: core.qbMan, wrapper: core.wrapper, bsg: core.bsg,
       flip: flip, formation: form, formName: te ? 'ACE ' + form : 'NO TE', OFF: offFor(te),
@@ -870,10 +868,6 @@ button, select { font: inherit; color: inherit; }
     }).filter(function (r) { return r.text; });
     R.specialAsked = !!opts.special;
     R.warnings = [];
-    if (R.specialAsked && !special) {
-      R.warnings.push({ level: 'info', kind: 'info', title: 'No Special version',
-        text: opts.play === 'counter' ? 'Special isn\'t part of Counter, so these are the base rules.' : 'Special is the TE\'s adjustment and there\'s no TE, so these are the base rules.' });
-    }
     R.free.forEach(function (f) {
       if (f.kind === 'sam') R.warnings.push({ level: 'bad', kind: 'broke', title: 'Doesn\'t work as drawn',
         text: 'The Sam at 90 is free at the point of attack and only the QB\'s keep fake holds him. Special fixes it by sending the Y to him.' });
@@ -1042,7 +1036,7 @@ button, select { font: inherit; color: inherit; }
     h += '<header class="card-h"><h3><span class="form">' + R.formName + '</span> ' + R.call.toUpperCase() + '</h3>' +
       '<span class="vs">vs ' + R.front.name.toUpperCase() + '</span></header>';
     h += '<p class="card-sub">' + E.PLAYS[R.play].name + ', ' + sideWord + ', ' + R.dirText +
-      ' <span class="dot-sep" aria-hidden="true">/</span> <span class="tech">' + R.front.line + '</span> <span class="dot-sep" aria-hidden="true">/</span> Mike 10 ' + (mikeTE ? 'TE side' : 'away') +
+      ' <span class="dot-sep" aria-hidden="true">/</span> <span class="tech">' + R.front.line + '</span>' + (R.front.move ? ', ' + R.front.move : '') + ' <span class="dot-sep" aria-hidden="true">/</span> Mike ' + (mikeTE ? 'frontside' : 'backside') + ' 10' +
       (R.special ? ' <span class="sp">Special</span>' : '') + '</p>';
     R.warnings.forEach(function (w) {
       h += '<div class="warnbox ' + w.level + ' ' + w.kind + '" role="note"><svg class="wicon" viewBox="0 0 20 18" aria-hidden="true"><path d="M10 1.5 L18.8 16.8 H1.2 Z"/><path class="bang" d="M10 6.5 V11.2 M10 13.6 V13.9"/></svg>' +
@@ -1079,7 +1073,7 @@ button, select { font: inherit; color: inherit; }
     document.querySelectorAll('#form-chips button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === state.formation ? 'true' : 'false'); });
     $('#cards').setAttribute('aria-labelledby', 'tab-' + play);
     var noTE = state.formation === 'NONE';
-    var spAllowed = play !== 'counter' && !noTE;
+    var spAllowed = play === 'duo' && !noTE;   // Special is Duo only, and needs a TE
     var sp = $('#t-special');
     sp.setAttribute('aria-pressed', state.special && spAllowed ? 'true' : 'false');
     sp.disabled = !spAllowed;
@@ -1087,8 +1081,7 @@ button, select { font: inherit; color: inherit; }
     $('#me').value = state.me;
     var notes = [];
     if (noTE) notes.push('No TE: the Y is split in the right slot (2x2) and the front is set to the right, so Over puts the 3T on the right and Under puts it on the left.');
-    if (state.special && !spAllowed) notes.push(noTE ? 'Special is a TE adjustment, so it is off with no TE.' : 'Special is only for Duo and Outside Zone, so Counter shows the base rules.');
-    else if (state.special) notes.push('Special (Buccs week): the Y takes the 90 lined up over him, the backside end is the QB\'s on the boot, and the uncovered tackle steps B gap then looks for work.');
+    if (state.special && spAllowed) notes.push('Special (Buccs week): the Y takes the 90 lined up over him, the backside end is the QB\'s on the boot, and the uncovered tackle steps B gap then looks for work.');
     var note = notes.join(' ');
     $('#mode-note').textContent = note;
     $('#mode-note').hidden = !note;
