@@ -139,6 +139,18 @@ button, select { font: inherit; color: inherit; }
 .card-h .form { color: #F6DCD7; font-weight: 600; font-size: 15px; letter-spacing: .04em; }
 .vs { flex: none; background: var(--gold); color: var(--maroon-deep); font: 700 14px/1 var(--font-d); letter-spacing: .05em; padding: 5px 9px; border-radius: 6px; }
 .card-sub { margin: 0; padding: 8px 12px 0; font-size: 12.5px; color: var(--muted); }
+.card.warn { border: 2px solid var(--flag); }
+.warnbox { display: grid; grid-template-columns: 22px 1fr; gap: 9px; align-items: start; margin: 10px 10px 0; padding: 9px 11px; border-radius: 8px; border-left: 4px solid var(--flag); background: rgba(198, 40, 40, .09); background: color-mix(in srgb, var(--flag) 11%, transparent); }
+.warnbox p { margin: 0; font-size: 13.5px; line-height: 1.4; color: var(--ink); }
+.warnbox strong { color: var(--flag); }
+.warnbox.info { border-left-color: var(--gold); background: rgba(238, 181, 66, .16); background: color-mix(in srgb, var(--gold) 18%, transparent); }
+.warnbox.info strong { color: var(--ink); }
+.wicon { width: 22px; height: 20px; margin-top: 1px; }
+.wicon path { fill: var(--flag); stroke: var(--flag); stroke-width: 1.4; stroke-linejoin: round; }
+.wicon path.bang { fill: none; stroke: #fff; stroke-width: 2.3; stroke-linecap: round; }
+.warnbox.info .wicon path:not(.bang) { fill: var(--gold); stroke: #C9921F; }
+.warnbox.info .wicon path.bang { stroke: #3A1A00; }
+.grp-warn { flex-basis: 100%; font: 700 13px/1.3 var(--font-b); color: var(--flag); }
 .card-sub .tech { font-weight: 600; color: var(--ink); white-space: nowrap; }
 .dot-sep { opacity: .5; padding: 0 2px; }
 .sp { display: inline-block; background: var(--gold); color: #3A1A00; font: 700 11px/1 var(--font-b); letter-spacing: .06em; text-transform: uppercase; padding: 3px 6px; border-radius: 4px; margin-left: 2px; vertical-align: 1px; }
@@ -275,6 +287,7 @@ button, select { font: inherit; color: inherit; }
     <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--q)" stroke-width="1.8" stroke-dasharray="3.5 2.6"/></svg>QB's man</span>
     <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--r)" stroke-width="1.8" stroke-dasharray="3.5 2.6"/></svg>RB reads him</span>
     <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--flag)" stroke-width="2.2"/></svg>Nobody has him</span>
+    <span><svg viewBox="0 0 30 16" aria-hidden="true"><rect x="3" y="2" width="24" height="12" rx="2.5" fill="none" stroke="var(--flag)" stroke-width="2.2"/></svg>Doesn't work as drawn</span>
     <span><svg viewBox="0 0 30 16" aria-hidden="true"><circle cx="15" cy="8" r="7" fill="none" stroke="var(--me)" stroke-width="3"/></svg>Your spot</span>
   </section>
 
@@ -712,13 +725,13 @@ button, select { font: inherit; color: inherit; }
       if (o.id === R.qbMan) { out.push({ id: o.id, tag: 'qb', text: nm + ': the QB\'s man on the boot' }); return; }
       if (R.play === 'duo' && o.id === 'MIKE') { out.push({ id: o.id, tag: 'rb', text: 'Mike (30): the RB reads him for the bounce' }); return; }
       if (R.play === 'duo' && !R.special && R.te && o.id === 'SAM' && d > 0) {
-        out.push({ id: o.id, tag: 'flag', text: 'Sam (90): free in base. Only the QB keep fake holds him, which is why Special sends the Y to him' });
+        out.push({ id: o.id, tag: 'flag', kind: 'sam', text: 'Sam (90): nobody has him (see the warning)' });
         return;
       }
       if (R.play === 'duo' && !R.special && o.kind === 'DL' && o.side === d) {
         var pst = d > 0 ? 'RT' : 'LT';
         var held = A[pst] && A[pst].t ? name(D, A[pst].t) : 'another DL';
-        out.push({ id: o.id, tag: 'flag', text: nm + ': nobody has him by the letter of the rule (' + pst + '\'s BS gap holds the ' + held + '). Only the QB keep fake holds him. Ask Luke' });
+        out.push({ id: o.id, tag: 'flag', kind: 'dl', dl: nm, pst: pst, psg: d > 0 ? 'RG' : 'LG', held: held, text: nm + ': nobody has him (see the warning)' });
         return;
       }
       if (backside) { out.push({ id: o.id, tag: 'bs', text: nm + ': backside, unblocked' }); return; }
@@ -855,6 +868,20 @@ button, select { font: inherit; color: inherit; }
       var eng = R.phys(P), a = R.A[eng] || {};
       return { pos: P, eng: eng, text: R.text[eng] ? mapNames(R.text[eng]) : '', src: a.src || '' };
     }).filter(function (r) { return r.text; });
+    R.specialAsked = !!opts.special;
+    R.warnings = [];
+    if (R.specialAsked && !special) {
+      R.warnings.push({ level: 'info', title: 'No Special version',
+        text: opts.play === 'counter' ? 'Special isn\'t part of Counter, so these are the base rules.' : 'Special is the TE\'s adjustment and there\'s no TE, so these are the base rules.' });
+    }
+    R.free.forEach(function (f) {
+      if (f.kind === 'sam') R.warnings.push({ level: 'bad', title: 'Doesn\'t work as drawn',
+        text: 'The Sam at 90 is free at the point of attack and only the QB\'s keep fake holds him. Special fixes it by sending the Y to him.' });
+      if (f.kind === 'dl') R.warnings.push({ level: 'bad', title: 'Doesn\'t work as drawn',
+        text: mapNames('Nobody blocks the ' + f.dl + ' at the point of attack. The ' + f.pst + '\'s BS gap rule takes him to the ' + f.held + ', so only the QB\'s keep fake holds the ' + f.dl + '. ' +
+          (te ? 'Special has the ' + f.pst + ' take the ' + f.dl + ' and the ' + f.psg + ' take the ' + f.held + ' alone, or check with Luke.'
+              : 'There\'s no Special without a TE, so check with Luke before calling it into this front.')) });
+    });
     R.free = R.free.map(function (f) { return { id: f.id, tag: f.tag, text: mapNames(f.text) }; });
     return R;
   }
@@ -1006,12 +1033,17 @@ button, select { font: inherit; color: inherit; }
     var sideWord = R.screenRight ? 'right' : 'left';
     var mikeTE = R.D.mikeSide > 0;
     var id = R.play + '-' + sideWord + '-' + R.front.key;
-    var h = '<article class="card" id="' + id + '">';
+    var bad = R.warnings.filter(function (w) { return w.level === 'bad'; }).length;
+    var h = '<article class="card' + (bad ? ' warn' : '') + '" id="' + id + '">';
     h += '<header class="card-h"><h3><span class="form">' + R.formName + '</span> ' + R.call.toUpperCase() + '</h3>' +
       '<span class="vs">vs ' + R.front.name.toUpperCase() + '</span></header>';
     h += '<p class="card-sub">' + E.PLAYS[R.play].name + ', ' + sideWord + ', ' + R.dirText +
       ' <span class="dot-sep" aria-hidden="true">/</span> <span class="tech">' + R.front.line + '</span> <span class="dot-sep" aria-hidden="true">/</span> Mike 30 ' + (mikeTE ? 'TE side' : 'away') +
       (R.special ? ' <span class="sp">Special</span>' : '') + '</p>';
+    R.warnings.forEach(function (w) {
+      h += '<div class="warnbox ' + w.level + '" role="note"><svg class="wicon" viewBox="0 0 20 18" aria-hidden="true"><path d="M10 1.5 L18.8 16.8 H1.2 Z"/><path class="bang" d="M10 6.5 V11.2 M10 13.6 V13.9"/></svg>' +
+        '<p><strong>' + esc(w.title) + '.</strong> ' + esc(w.text) + '</p></div>';
+    });
     h += '<figure class="field">' + svgFor(R, me) + '<figcaption class="vh">' + esc(R.call + ' versus ' + R.front.name + '. Assignments are listed below.') + '</figcaption></figure>';
     h += '<ol class="asg">';
     R.rows.forEach(function (r) {
@@ -1062,7 +1094,12 @@ button, select { font: inherit; color: inherit; }
     var html = '';
     sides.forEach(function (side) {
       var R0 = E.resolve({ play: play, side: side, front: 'under', special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
-      html += '<h2 class="grp"><span>' + R0.formName + ' ' + R0.call.toUpperCase() + '</span><small>' + E.PLAYS[play].name + ' to the ' + side + ', ' + (R0.te ? (R0.toTE ? 'toward the TE' : 'away from the TE') : 'no TE') + '</small></h2>';
+      var broken = fronts.filter(function (fr) {
+        return E.resolve({ play: play, side: side, front: fr, special: state.special, mikeFlip: state.mikeFlip, formation: state.formation })
+          .warnings.some(function (w) { return w.level === 'bad'; });
+      }).map(function (fr) { return E.FRONTS[fr].name; });
+      html += '<h2 class="grp"><span>' + R0.formName + ' ' + R0.call.toUpperCase() + '</span><small>' + E.PLAYS[play].name + ' to the ' + side + ', ' + (R0.te ? (R0.toTE ? 'toward the TE' : 'away from the TE') : 'no TE') + '</small>' +
+        (broken.length ? '<b class="grp-warn">Doesn\'t work vs ' + broken.join(', ') + '</b>' : '') + '</h2>';
       html += '<div class="grid">';
       fronts.forEach(function (fr) {
         var R = E.resolve({ play: play, side: side, front: fr, special: state.special, mikeFlip: state.mikeFlip, formation: state.formation });
